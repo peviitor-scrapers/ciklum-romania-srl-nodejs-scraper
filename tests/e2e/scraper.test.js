@@ -177,7 +177,7 @@ describe('E2E: Full Scraping Pipeline', () => {
       const result = await company.validateAndGetCompany();
 
       expect(result.status).toBe('active');
-      expect(result.company).toBe('CIKLUM ROMANIA SRL');
+      expect(result.company).toBe('CIKLUM ROMANIA S.R.L.');
       expect(result.cif).toBe(TEST_CIF);
     }, 30000);
   });
