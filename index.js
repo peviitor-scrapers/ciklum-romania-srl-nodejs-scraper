@@ -42,6 +42,47 @@ async function fetchRomanianJobs() {
   return list.filter(j => j.PrimaryLocationCountry === 'RO');
 }
 
+async function uploadJobsToSolr(jobs) {
+  const AUTH = process.env.SOLR_AUTH;
+  if (!AUTH) {
+    console.log('SOLR_AUTH not set — skipping SOLR upload');
+    return;
+  }
+
+  const solrJobs = jobs.map(j => ({
+    cif: CIF,
+    company: COMPANY,
+    title: j.title,
+    url: j.url,
+    postingDate: j.postingDate,
+    date: new Date().toISOString(),
+    source: 'ciklum.com',
+    status: 'scraped',
+  }));
+
+  const params = new URLSearchParams({ commit: 'true' });
+
+  const res = await fetch(
+    `https://solr.peviitor.ro/solr/job/update?${params}`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + Buffer.from(AUTH).toString('base64'),
+        'Content-Type': 'application/json',
+        'User-Agent': 'job_seeker_ro_spider',
+      },
+      body: JSON.stringify(solrJobs),
+    }
+  );
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`SOLR upload error: ${res.status} — ${text}`);
+  }
+
+  console.log(`Uploaded ${solrJobs.length} jobs to SOLR`);
+}
+
 async function main() {
   fs.mkdirSync('tmp', { recursive: true });
 
@@ -68,9 +109,11 @@ async function main() {
   fs.writeFileSync('tmp/jobs.json', JSON.stringify(payload, null, 2), 'utf-8');
   console.log(`Scraped ${uniqueJobs.length} unique jobs from Ciklum`);
   console.log('Saved to tmp/jobs.json');
+
+  await uploadJobsToSolr(uniqueJobs);
 }
 
 main().catch(err => {
-  console.error(err);
+  console.error(err.message || err);
   process.exit(1);
 });
