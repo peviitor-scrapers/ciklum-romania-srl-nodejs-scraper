@@ -47,4 +47,12 @@ node --experimental-vm-modules node_modules/jest/bin/jest.js --testPathPattern=e
 - `src/anaf.js` — core ANAF library (imported by company.js)
 - `company.js` — company validation (ANAF + Peviitor + SOLR)
 - `solr.js` — SOLR operations
-- `index.js` — main scraper orchestrator
+- `index.js` — main scraper orchestrator (Oracle HCM REST API)
+
+### 8. Scraper Architecture
+- Uses Oracle HCM REST API (`recruitingCEJobRequisitions`) instead of HTML scraping
+- Ciklum careers page is an SPA (Oracle Cloud HCM), jobs load via JavaScript
+- API: `GET /hcmRestApi/resources/latest/recruitingCEJobRequisitions`
+- Required headers: `ora-irc-cx-userid` (UUID), `ora-irc-language` (en), `Content-Type` (application/vnd.oracle.adf.resourceitem+json;charset=utf-8), `Origin`, `Referer`
+- Max 25 results per request, filters Romanian jobs client-side via `PrimaryLocationCountry === 'RO'`
+- Job URL: `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/{Id}`

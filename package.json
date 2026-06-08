@@ -13,7 +13,8 @@
   "dependencies": {
     "axios": "^1.7.0",
     "cheerio": "^1.0.0-rc.12",
-    "dotenv": "^16.4.0"
+    "dotenv": "^16.4.0",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "jest": "^29.7.0",
@@ -21,9 +22,14 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testMatch": ["**/tests/**/*.test.js"],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
     "verbose": true,
-    "reporters": ["default", "jest-html-reporter"],
+    "reporters": [
+      "default",
+      "jest-html-reporter"
+    ],
     "testTimeout": 30000
   }
 }
