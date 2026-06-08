@@ -57,10 +57,11 @@ describe('Integration: API Workflow', () => {
 
       expect(data).toBeDefined();
       expect(data.cui).toBe(45871772);
-      expect(data.name).toBe('CIKLUM ROMANIA SRL');
+      expect(data.name).toBe('CIKLUM ROMANIA S.R.L.');
       expect(data).toHaveProperty('address');
       expect(data).toHaveProperty('registrationNumber');
-      expect(data).toHaveProperty('caenCode');
+      expect(data).toHaveProperty('authorizedCaenCodes');
+      expect(Array.isArray(data.authorizedCaenCodes)).toBe(true);
       expect(data).toHaveProperty('onrcStatusLabel', 'Funcțiune');
     }, 15000);
 
@@ -79,15 +80,16 @@ describe('Integration: API Workflow', () => {
   });
 
   describe('Peviitor API', () => {
-    it('should respond successfully and contain companies array', async () => {
-      const res = await fetch('https://api.peviitor.ro/v1/company/', {
+    it('should return Ciklum company data when queried by CIF', async () => {
+      const res = await fetch(`https://api.peviitor.ro/v1/company/?cif=${CIKLUM_CIF}`, {
         headers: { 'User-Agent': 'job_seeker_ro_spider' }
       });
 
       expect(res.ok).toBe(true);
       const data = await res.json();
-      expect(data).toHaveProperty('companies');
-      expect(Array.isArray(data.companies)).toBe(true);
+      expect(data).toHaveProperty('company');
+      expect(data.company._root_).toBe(CIKLUM_CIF);
+      expect(data.company.company).toBe('CIKLUM ROMANIA SRL');
     }, 15000);
   });
 
@@ -191,8 +193,8 @@ describe('Integration: API Workflow', () => {
       expect(ciklumCompany).toBeDefined();
 
       const anafData = await anaf.getCompanyFromANAF(ciklumCompany.cui.toString());
-      expect(anafData.name).toBe('CIKLUM ROMANIA SRL');
-      expect(anafData.inactive).toBe(false);
+      expect(anafData.name).toBe('CIKLUM ROMANIA S.R.L.');
+      expect(anafData.onrcStatusLabel).toBe('Funcțiune');
     }, 30000);
   });
 });
