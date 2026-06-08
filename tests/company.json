@@ -1,0 +1,27 @@
+{
+  "validatedAt": "2026-06-08T00:00:00.000Z",
+  "source": "ANAF",
+  "brand": "Ciklum",
+  "anaf": {
+    "cui": 45871772,
+    "name": "CIKLUM ROMANIA SRL",
+    "address": "MUNICIPIUL BUCUREŞTI, SECTOR 6, BD IULIU MANIU, NR.6L, CLADIREA CAMPUS 6.1, ET.1+2",
+    "registrationNumber": "J2022005859401",
+    "caenCode": "6210",
+    "inactive": false,
+    "onrcStatusLabel": "Funcțiune",
+    "vatRegistered": true,
+    "eFacturaRegistered": false
+  },
+  "peviitor": null,
+  "summary": {
+    "company": "CIKLUM ROMANIA SRL",
+    "cif": "45871772",
+    "active": true,
+    "address": "MUNICIPIUL BUCUREŞTI, SECTOR 6, BD IULIU MANIU, NR.6L, CLADIREA CAMPUS 6.1, ET.1+2",
+    "registrationNumber": "J2022005859401",
+    "caenCode": "6210",
+    "vatRegistered": true,
+    "eFacturaRegistered": false
+  }
+}
