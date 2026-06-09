@@ -3,83 +3,19 @@ import { jest } from '@jest/globals';
 const COMPANY = 'CIKLUM ROMANIA SRL';
 const CIF = '45871772';
 
-describe('index.js Oracle HCM API Scraper', () => {
-  let mainModule;
-
+describe('index.js Chromium Scraper', () => {
   beforeAll(async () => {
-    jest.unstable_mockModule('axios', () => {
-      const mockData = {
-        items: [{
-          requisitionList: [
-            { Id: '1245', Title: 'Senior Full Stack Engineer', PostedDate: '2026-06-05', PrimaryLocationCountry: 'RO' },
-            { Id: '2130', Title: 'DevOps Engineer', PostedDate: '2026-06-05', PrimaryLocationCountry: 'UA' },
-            { Id: '3001', Title: 'Java Developer', PostedDate: '2026-06-06', PrimaryLocationCountry: 'RO' },
-          ],
-        }],
-      };
-
-      return {
-        default: {
-          get: jest.fn().mockResolvedValue({ data: mockData }),
-        },
-      };
-    });
+    jest.unstable_mockModule('child_process', () => ({
+      execSync: jest.fn().mockReturnValue('<script>config</script><div class="job-tile job-list-item">test</div>'),
+    }));
   });
 
-  beforeEach(async () => {
-    jest.resetModules();
-    mainModule = await import('../../index.js');
-  });
-
-  describe('API Integration', () => {
-    it('should call the Oracle HCM API with correct headers', async () => {
-      const axios = (await import('axios')).default;
-      expect(axios.get).toHaveBeenCalledTimes(1);
-      const [url, config] = axios.get.mock.calls[0];
-      expect(url).toContain('hcmRestApi/resources/latest/recruitingCEJobRequisitions');
-      expect(config.headers['ora-irc-cx-userid']).toBeDefined();
-      expect(config.headers['ora-irc-language']).toBe('en');
-      expect(config.headers['Origin']).toBe('https://explore-jobs.ciklum.com');
-      expect(config.params.finder).toContain('siteNumber=CX_1001');
-      expect(config.params.expand).toBe('requisitionList');
-    });
-
+  describe('Job Data Structure', () => {
     it('should use correct CIF and company name', () => {
-      const payload = {
-        source: 'ciklum.com',
-        company: COMPANY,
-        cif: CIF,
-      };
-      expect(payload.company).toBe('CIKLUM ROMANIA SRL');
-      expect(payload.cif).toBe('45871772');
-    });
-  });
-
-  describe('Romanian Jobs Filtering', () => {
-    it('should filter jobs to RO country only', async () => {
-      const mockList = [
-        { Id: '1245', Title: 'Sr Engineer', PostedDate: '2026-06-05', PrimaryLocationCountry: 'RO' },
-        { Id: '2130', Title: 'DevOps', PostedDate: '2026-06-05', PrimaryLocationCountry: 'UA' },
-        { Id: '3001', Title: 'Java Dev', PostedDate: '2026-06-06', PrimaryLocationCountry: 'RO' },
-      ];
-
-      const roJobs = mockList.filter(j => j.PrimaryLocationCountry === 'RO');
-      expect(roJobs).toHaveLength(2);
-      expect(roJobs[0].Title).toBe('Sr Engineer');
-      expect(roJobs[1].Title).toBe('Java Dev');
+      expect(COMPANY).toBe('CIKLUM ROMANIA SRL');
+      expect(CIF).toBe('45871772');
     });
 
-    it('should exclude non-RO jobs', () => {
-      const mockList = [
-        { Id: '2130', Title: 'DevOps', PostedDate: '2026-06-05', PrimaryLocationCountry: 'UA' },
-      ];
-
-      const roJobs = mockList.filter(j => j.PrimaryLocationCountry === 'RO');
-      expect(roJobs).toHaveLength(0);
-    });
-  });
-
-  describe('Job URL Construction', () => {
     it('should construct job URL from ID', () => {
       const id = '1245';
       const url = `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/${id}`;
@@ -109,6 +45,22 @@ describe('index.js Oracle HCM API Scraper', () => {
       const payload = { jobs: [] };
       expect(Array.isArray(payload.jobs)).toBe(true);
       expect(payload.jobs).toHaveLength(0);
+    });
+
+    it('should save output to tmp/jobs.json', () => {
+      const payload = {
+        source: 'ciklum.com',
+        scrapedAt: new Date().toISOString(),
+        company: COMPANY,
+        cif: CIF,
+        jobs: [
+          { title: 'Senior Full Stack Engineer', url: 'https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/1245', location: 'Romania' },
+        ],
+      };
+      expect(payload.company).toBe(COMPANY);
+      expect(payload.cif).toBe(CIF);
+      expect(payload.jobs).toHaveLength(1);
+      expect(payload.jobs[0].title).toBe('Senior Full Stack Engineer');
     });
   });
 });

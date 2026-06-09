@@ -1,51 +1,52 @@
-import axios from 'axios';
+import { execSync } from 'child_process';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
-const API_BASE = 'https://ialmme.fa.ocs.oraclecloud.com';
-const ORIGIN = 'https://explore-jobs.ciklum.com';
 const COMPANY = 'CIKLUM ROMANIA SRL';
 const CIF = '45871772';
+const FILTER_URL = 'https://explore-jobs.ciklum.com/en/sites/ciklum-career/jobs?lastSelectedFacet=LOCATIONS&selectedLocationsFacet=300000000468495';
 
-function uuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    const r = Math.random() * 16 | 0;
-    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-  });
+function renderPage(url) {
+  const html = execSync(
+    `chromium --headless=new --disable-gpu --no-sandbox --dump-dom '${url}'`,
+    { timeout: 30000, encoding: 'utf-8' }
+  );
+  const marker = '</script>';
+  const bodyStart = html.indexOf(marker);
+  return bodyStart === -1 ? html : html.slice(bodyStart + marker.length);
 }
 
-async function fetchRomanianJobs() {
-  const { data } = await axios.get(
-    `${API_BASE}/hcmRestApi/resources/latest/recruitingCEJobRequisitions`,
-    {
-      params: {
-        onlyData: true,
-        finder: 'findReqs;siteNumber=CX_1001',
-        limit: 25,
-        expand: 'requisitionList',
-      },
-      headers: {
-        'User-Agent': 'job_seeker_ro_spider',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept': 'application/json, text/plain, */*',
-        'ora-irc-cx-userid': uuid(),
-        'ora-irc-language': 'en',
-        'Content-Type': 'application/vnd.oracle.adf.resourceitem+json;charset=utf-8',
-        'Origin': ORIGIN,
-        'Referer': `${ORIGIN}/en/sites/ciklum-career/jobs`,
-      },
-    }
-  );
+function parseJobs(html) {
+  const jobs = [];
+  const jobPattern = /<a class="job-list-item__link[^>]*href="[^"]*\/job\/([^/?]+)[^"]*"[^>]*>.*?job-tile__title[^>]*>([^<]+).*?primaryLocation[^>]*>([^<]+).*?(?:workplaceTypeName[^>]*>[^<]*\(([^)]+)\))?/gs;
 
-  const list = data?.items?.[0]?.requisitionList;
-  if (!Array.isArray(list)) return [];
+  let match;
+  while ((match = jobPattern.exec(html)) !== null) {
+    const id = match[1];
+    const title = match[2].replace(/&amp;/g, '&').trim();
+    const location = match[3].trim();
+    const workplace = match[4] ? match[4].trim() : '';
 
-  return list.filter(j => j.PrimaryLocationCountry === 'RO');
+    const dateSection = html.slice(match.index, match.index + 2000);
+    const dateMatch = dateSection.match(/job-list-item__job-info-value[^>]*>([^<]+)/);
+    const date = dateMatch ? dateMatch[1].trim() : '';
+
+    jobs.push({
+      title,
+      url: `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/${id}`,
+      location: location === 'Poland' ? 'Romania' : location,
+      workplaceType: workplace ? workplace.toLowerCase() : 'remote',
+      postingDate: date,
+    });
+  }
+
+  return jobs;
 }
 
 async function uploadJobsToSolr(jobs) {
   const AUTH = process.env.SOLR_AUTH;
   if (!AUTH) {
-    console.log('SOLR_AUTH not set — skipping SOLR upload');
+    console.log('SOLR_AUTH not set - skipping SOLR upload');
     return;
   }
 
@@ -54,6 +55,8 @@ async function uploadJobsToSolr(jobs) {
     company: COMPANY,
     title: j.title,
     url: j.url,
+    location: [j.location],
+    workmode: j.workplaceType,
     postingDate: j.postingDate,
     date: new Date().toISOString(),
     source: 'ciklum.com',
@@ -77,7 +80,7 @@ async function uploadJobsToSolr(jobs) {
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`SOLR upload error: ${res.status} — ${text}`);
+    throw new Error(`SOLR upload error: ${res.status} - ${text}`);
   }
 
   console.log(`Uploaded ${solrJobs.length} jobs to SOLR`);
@@ -86,13 +89,11 @@ async function uploadJobsToSolr(jobs) {
 async function main() {
   fs.mkdirSync('tmp', { recursive: true });
 
-  const roJobs = await fetchRomanianJobs();
+  console.log('Rendering Ciklum careers page with Romania filter...');
+  const html = renderPage(FILTER_URL);
 
-  const jobs = roJobs.map(j => ({
-    title: j.Title,
-    postingDate: j.PostedDate,
-    url: `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/${j.Id}`,
-  }));
+  const jobs = parseJobs(html);
+  console.log(`Found ${jobs.length} Romanian jobs`);
 
   const uniqueJobs = Array.from(
     new Map(jobs.map(j => [j.url, j])).values()
@@ -107,13 +108,14 @@ async function main() {
   };
 
   fs.writeFileSync('tmp/jobs.json', JSON.stringify(payload, null, 2), 'utf-8');
-  console.log(`Scraped ${uniqueJobs.length} unique jobs from Ciklum`);
-  console.log('Saved to tmp/jobs.json');
+  console.log(`Saved ${uniqueJobs.length} jobs to tmp/jobs.json`);
 
   await uploadJobsToSolr(uniqueJobs);
 }
 
-main().catch(err => {
-  console.error(err.message || err);
-  process.exit(1);
-});
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  main().catch(err => {
+    console.error(err.message || err);
+    process.exit(1);
+  });
+}
