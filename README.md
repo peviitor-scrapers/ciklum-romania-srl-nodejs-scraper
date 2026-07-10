@@ -2,9 +2,16 @@
 
 [![WebScraper Ciklum to Peviitor](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/scrape.yml/badge.svg)](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/scrape.yml)
 [![Automation Tests](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/test.yml/badge.svg)](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/test.yml)
+
+[![Version](https://img.shields.io/github/package-json/v/sebiboga/ciklum-romania-srl-nodejs-scraper?label=version&color=blue)](CHANGELOG.md)
+[![Test Results](https://img.shields.io/badge/test--results-HTML-9b59b6)](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/test-results/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![JavaScript](https://img.shields.io/badge/javascript-ESM-F7DF1E?logo=javascript&logoColor=black)](https://ecma-international.org/)
 [![Node.js](https://img.shields.io/badge/node-24-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fpeviitor.ro&label=peviitor.ro)](https://peviitor.ro)
+[![API](https://img.shields.io/website?url=https%3A%2F%2Fapi.peviitor.ro%2F&label=api.peviitor.ro)](https://api.peviitor.ro/)
+[![SOLR](https://img.shields.io/website?url=https%3A%2F%2Fsolr.peviitor.ro%2Fsolr%2F&label=solr.peviitor.ro)](https://solr.peviitor.ro/solr/)
+[![GitHub Pages](https://img.shields.io/github/deployments/sebiboga/ciklum-romania-srl-nodejs-scraper/github-pages?label=GitHub%20Pages)](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/)
 
 **job_seeker_ro_spider** — un scraper pentru job-urile Ciklum din România. Extrage anunțurile de pe [Ciklum Careers](https://explore-jobs.ciklum.com) și le publică în [peviitor.ro](https://peviitor.ro) prin API-ul SOLR.
 
@@ -14,30 +21,55 @@ Proiectul automatizează colectarea zilnică a job-urilor Ciklum din România, m
 
 ## Features
 
-- Extrage job-uri din pagina Ciklum Careers
+- Extrage job-uri din API-ul public Ciklum Careers (Oracle HCM REST API)
 - Validează compania via ANAF (CUI, status activ/inactiv, adresă completă)
+- **Fallback CUIFirma** — când ANAF e indisponibil, folosește cuifirma.ro
 - Cross-validează cu Peviitor API
 - Stochează în SOLR (job core + company core)
-- GitHub Actions: scrape zilnic + testare automată (unit, integration, e2e)
+- Generează `docs/jobs.md` automat — accesibil pe GitHub Pages
+- **Identitate companie într-un singur fișier** (`company.json`) — cache ANAF committed
+- GitHub Actions: scrape zilnic + testare automată (unit, integration, e2e, consistency)
 - Teste SOLR condiționale — auto-skip când `SOLR_AUTH` nu e setat
 - Se identifică prin User-Agent: `job_seeker_ro_spider`
 
 ## Project Structure
 
 ```
-├── index.js           # Main scraper entry point
-├── company.js         # Company validation via ANAF + Peviitor + SOLR
-├── src/anaf.js        # ANAF API core module (search + company details)
-├── solr.js            # SOLR operations (query, upsert, delete, company)
-├── company.json       # Cached company data (fallback when ANAF is down)
-├── ROBOTS.md          # robots.txt analysis and scraping policy
-├── tests/             # Test suite
-│   ├── unit/          # Unit tests (mocked APIs)
-│   ├── integration/   # Integration tests (ANAF + SOLR live)
-│   └── e2e/           # End-to-end tests (full pipeline)
-├── .github/workflows/
-│   ├── scrape.yml     # Daily scraping at 6 AM UTC
-│   └── test.yml       # Automation Tests on push/PR
+├── index.js                    # Main scraper entry point
+├── company.js                  # Company validation via ANAF + Peviitor + SOLR
+├── demoanaf.js                 # CLI wrapper for src/anaf.js
+├── solr.js                     # SOLR operations (query, upsert, delete, company)
+├── company.json                # ANAF data cache (committed, fallback when ANAF is down)
+├── src/
+│   ├── anaf.js                 # ANAF API core module (search + company details + cuifirma fallback)
+│   └── cuifirma.js             # CUIFirma MCP fallback for ANAF
+├── tests/
+│   ├── package.json            # Jest config for test suite
+│   ├── company.json            # Mock ANAF data used in unit tests
+│   ├── unit/
+│   │   ├── index.test.js       # Tests for parseApiJobs, mapToJobModel, transformJobsForSOLR
+│   │   ├── company.test.js     # Tests for validateAndGetCompany, fallback caching
+│   │   ├── solr.test.js        # Tests for query, upsert, delete operations
+│   │   └── demoanaf.test.js    # Tests for ANAF search and company retrieval
+│   ├── integration/
+│   │   └── workflow.test.js    # Live ANAF + SOLR integration tests
+│   ├── e2e/
+│   │   └── scraper.test.js     # Full pipeline tests with real Ciklum API
+│   └── consistency/
+│       ├── public.test.js      # Verifies repo is public
+│       ├── repo.test.js        # Verifies branch, Pages, secrets, workflows
+│       ├── topics.test.js      # Verifies required repo topics
+│       └── workflow-naming.test.js  # Validates workflow naming conventions
+├── docs/
+│   ├── index.html              # Live job board (GitHub Pages)
+│   ├── jobs.md                 # Scraped jobs in markdown (generated by CI)
+│   ├── company.json            # Static copy of company data for GitHub Pages
+│   ├── README.md
+│   └── test-results/           # Test reports (generated by CI)
+├── .github/
+│   └── workflows/
+│       ├── scrape.yml          # Daily scraping at 6 AM UTC
+│       └── test.yml            # Automation Tests on push/PR
 └── package.json
 ```
 
@@ -91,14 +123,22 @@ npm run test:e2e
 ### Daily Scraping
 
 The `scrape.yml` workflow runs daily at 6 AM UTC via GitHub Actions. It:
-1. Validates company data via ANAF
-2. Scrapes current job listings from Ciklum Careers
-3. Updates Solr with new/removed jobs
-4. Uploads job data as artifacts
+1. Runs pre-scrape tests (unit + integration)
+2. Validates company data via ANAF
+3. Scrapes current job listings from Ciklum Careers (Oracle HCM API)
+4. Updates Solr with new/removed jobs
+5. Runs post-scrape tests (e2e + consistency)
+6. Uploads test results and job data as artifacts
+7. Generates [`docs/jobs.md`](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/jobs.md) with company info and all scraped jobs
+8. Pushes test reports and `docs/jobs.md` to [`docs/`](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/)
 
 ### Test Automation
 
-The `test.yml` workflow runs on every push and pull request.
+The `test.yml` workflow runs on every push and pull request. It:
+1. Ensures Ciklum exists in the company core
+2. Runs unit, integration, e2e, and consistency tests
+3. Validates data integrity in Solr
+4. Pushes test reports to [`docs/test-results/`](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/test-results/)
 
 ## Acknowledgments
 
@@ -119,6 +159,11 @@ This project is managed by [ASOCIATIA OPORTUNITATI SI CARIERE](https://oportunit
 ## Robots.txt Policy
 
 Acest scraper respectă regulile din [robots.txt](https://explore-jobs.ciklum.com/robots.txt) al Ciklum Careers. Pentru analiza completă, vezi [ROBOTS.md](ROBOTS.md).
+
+**Puncte cheie:**
+- Ciklum Careers nu blochează accesul în robots.txt (`Allow: /`)
+- Scraperul folosește rate limiting (1s delay între pagini) și un singur User-Agent identificabil (`job_seeker_ro_spider`)
+- Comportament: 1 cerere/25 job-uri, delay 1s între pagini, fără concurență
 
 ## Disclaimer
 

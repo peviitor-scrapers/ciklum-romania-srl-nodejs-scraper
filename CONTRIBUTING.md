@@ -1,14 +1,14 @@
-# Contributing to Ciklum Job Scraper
+# Contributing
 
 Thank you for your interest in contributing!
 
-## How to Contribute
+## Code Style for Contributions to This Repo
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- Use ES6+ modules (`type: module` in `package.json`)
+- Add tests for new features in the matching `tests/<level>/` folder
+- Ensure all tests pass before submitting PR
+- Update relevant `.md` files (especially `files.md` and `AGENTS.md`) when adding new files
+- Reference a GitHub issue in every commit (see [ISSUES.md](ISSUES.md))
 
 ## Development Setup
 
@@ -23,20 +23,13 @@ npm install
 npm test
 ```
 
-## Code Style
-
-- Use ES6+ modules
-- Add tests for new features
-- Ensure all tests pass before submitting PR
-- Update documentation as needed
-
 ## Reporting Issues
 
-Please report issues via GitHub Issues with:
+Open a [GitHub Issue](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/issues) with:
 - Clear description of the problem
 - Steps to reproduce
 - Expected vs actual behavior
-- Environment details (Node version, OS, etc.)
+- Environment details (Node version, OS)
 
 ## License
 

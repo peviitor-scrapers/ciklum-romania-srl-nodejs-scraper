@@ -67,11 +67,11 @@ export SOLR_AUTH=your-solr-credentials
 # Run the full scraper workflow (single command)
 node index.js
 
-# Test mode (one page only)
+# Test mode (one page only, limit 25 jobs)
 node index.js --test
 ```
 
-> **Important**: Scraper does NOT delete jobs from other sources (ANOFM, etc). It only upserts Ciklum jobs. Existing jobs are preserved.
+> **Important**: Scraper does NOT delete jobs from other sources (ANOFM, etc). It only upserts Ciklum Careers jobs. Existing jobs are preserved.
 
 ## Full Workflow (automatic)
 
@@ -79,7 +79,7 @@ When running `node index.js`, the following steps happen automatically:
 
 1. **Check existing jobs count** - Query SOLR by CIF (read-only)
 2. **Validate company via ANAF** - Check company exists and is active
-3. **Scrape jobs** - Extract jobs from Ciklum careers page (Romania only)
+3. **Scrape jobs** - Extract jobs from Ciklum careers API (Romania only)
 4. **Transform for SOLR** - Fix locations (only Romanian cities), normalize fields
 5. **Upsert to SOLR** - Add/update jobs (SOLR handles duplicates by URL)
 6. **Show Summary** - Log job counts
@@ -89,6 +89,9 @@ When running `node index.js`, the following steps happen automatically:
 ## Workflow Flowchart
 
 ```
+company.json (cached ANAF data: CIF, brand, URLs)
+    │
+    ▼
 index.js
     │
     ▼
@@ -97,37 +100,61 @@ querySOLR(CIF) - just count, don't delete
     ▼
 company.js (validate company)
     ├── ANAF API ──► get company name + CIF
+    │   └── cuifirma.ro fallback if ANAF unavailable
     ├── Peviitor API ──► validate company model
     └── SOLR ──► check existing jobs count
     │
     ▼ (if active)
-scrape Ciklum Careers (jobs for Romania)
+scrape Ciklum API (Oracle HCM, jobs for Romania)
     │
     ▼
 transformJobsForSOLR()
     ├── Filter: keep only Romanian locations
+    │         (Bucharest, Cluj-Napoca, etc)
     ├── Fallback: "România" for unknown
     └── Format: lowercase tags, uppercase company
     │
     ▼
 upsertJobs() - SOLR handles duplicate by URL
+    │
+    ▼
+generateJobsMarkdown() → docs/jobs.md
+    └── committed to repo by CI → available on GitHub Pages
 ```
 
 ## File Responsibilities
 
 | File | Role |
 |------|------|
-| `index.js` | Main entry point - full workflow: extract existing → validate company → scrape → transform → upsert → verify |
-| `company.js` | Validates company via ANAF + Peviitor, checks if company is active/inactive, saves company.json |
+| `company.json` | **ANAF cache (committed)** — survives between CI runs, fallback when ANAF is down |
+| `index.js` | Main entry point - full workflow: validate company → scrape → transform → upsert → generate docs/jobs.md |
+| `company.js` | Validates company via ANAF + Peviitor; caches in root `company.json` and `tmp/company.json` |
 | `solr.js` | SOLR operations module - query, delete, upsert jobs + standalone commands |
-| `src/anaf.js` | ANAF API core module - searchCompany(brand) and getCompanyFromANAF(cif) |
+| `src/anaf.js` | ANAF API core module - searchCompany(brand) and getCompanyFromANAF(cif) with 3-retry/2s-backoff + cuifirma fallback |
+| `src/cuifirma.js` | CUIFirma MCP fallback - queries cuifirma.ro when ANAF is unavailable |
+| `demoanaf.js` | CLI entry point for ANAF module (thin wrapper around src/anaf.js) |
 
 ## API Endpoints
 
+- **Ciklum Careers**: `https://explore-jobs.ciklum.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions` — Oracle HCM REST API
 - **DemoANAF Search**: `https://demoanaf.ro/api/search?q=BRAND` - Search companies by name/brand
 - **DemoANAF Company**: `https://demoanaf.ro/api/company/:cui` - Get company details by CIF
+- **CUIFirma MCP**: `https://cuifirma.ro/mcp/cuifirma` - Fallback when ANAF is unavailable
 - **Peviitor API**: `https://api.peviitor.ro/v1/company/`
 - **Solr**: `https://solr.peviitor.ro/solr/job` (auth: via `SOLR_AUTH` environment variable)
+
+## Rate Limiting & Politeness
+
+The scraper is intentionally slow to be a good citizen:
+
+| Setting | Value | Where |
+|---------|-------|-------|
+| Delay between pages | 1000 ms | `index.js` — `sleep(1000)` |
+| Page size | 25 results | Oracle HCM API limit |
+| Max pages | 10 | `index.js` — `MAX_PAGES` |
+| ANAF retries | 3 attempts, 2s exponential backoff | `src/anaf.js` |
+| Concurrency | 1 (sequential) | No `Promise.all` for paginated fetches |
+| User-Agent | `job_seeker_ro_spider` | Identifies the scraper in server logs |
 
 ## Environment Variables
 

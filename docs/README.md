@@ -19,23 +19,31 @@ job_seeker_ro_spider
    - Status: activ/inactiv/radiat
    - Adresa completă din registrul comerțului
 2. **Cross-validează cu Peviitor** — verifică existența companiei în API-ul Peviitor
-3. **Scrape-uiește job-urile** — extrage lista completă de job-uri din pagina Ciklum Careers
+3. **Scrape-uiește job-urile** — extrage lista completă de job-uri din API-ul public Ciklum Careers (Oracle HCM), filtrat pe România
 4. **Transformă datele** — normalizează locațiile (doar orașe românești), tag-urile (lowercase), workmode-ul (remote/on-site/hybrid)
 5. **Stochează în SOLR** — upsert în `job` core (job-urile) și `company` core (datele companiei cu adresa completă)
+6. **Generează docs/jobs.md** — fișier markdown cu informații companie + toate job-urile curente, publicat pe [GitHub Pages](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/jobs.md)
 
 ## Structură proiect
 
 ```
-├── index.js           # Orchestrator principal
-├── company.js         # Validare companie (ANAF + Peviitor + SOLR)
-├── src/anaf.js        # Modul ANAF API (search + company details)
-├── solr.js            # Operații SOLR (query, upsert, delete, company)
-├── company.json       # Cache companie (fallback când ANAF e down)
-├── ROBOTS.md          # Analiză robots.txt și politici de scraping
+├── company.json                # Cache ANAF (committed, fallback când ANAF e down)
+├── index.js                    # Orchestrator principal
+├── company.js                  # Validare companie (ANAF + Peviitor + SOLR)
+├── src/anaf.js                 # Modul ANAF API (search + company details + cuifirma fallback)
+├── src/cuifirma.js             # Fallback CUIFirma MCP pentru ANAF
+├── demoanaf.js                 # CLI wrapper pentru src/anaf.js
+├── solr.js                     # Operații SOLR (query, upsert, delete, company)
+├── docs/
+│   ├── index.html              # Pagina live (GitHub Pages)
+│   ├── jobs.md                 # Job-uri scraped (generat de CI)
+│   ├── company.json            # Copie statică a datelor companie
+│   └── test-results/           # Rapoarte de teste (generat de CI)
 ├── tests/
 │   ├── unit/          # Teste unitare (API-uri mock-uite)
 │   ├── integration/   # Teste de integrare (ANAF + SOLR live)
-│   └── e2e/           # Teste end-to-end (pipelin complet)
+│   ├── e2e/           # Teste end-to-end (pipelin complet)
+│   └── consistency/   # Teste de consistență (GitHub repo config)
 └── .github/workflows/
     ├── scrape.yml     # Rulează zilnic la 6 AM UTC
     └── test.yml       # Teste automate la fiecare push/PR
@@ -45,15 +53,16 @@ job_seeker_ro_spider
 
 | API | URL | Autentificare |
 |---|---|---|
-| Ciklum Careers | `https://explore-jobs.ciklum.com/...` | Public |
+| Ciklum Careers | `https://explore-jobs.ciklum.com/hcmRestApi/...` | Public (Oracle HCM) |
 | ANAF (demoanaf) | `https://demoanaf.ro/api/...` | Public |
+| CUIFirma | `https://cuifirma.ro/mcp/cuifirma` | Public (fallback ANAF) |
 | Peviitor | `https://api.peviitor.ro/v1/company/` | Public |
 | SOLR (job core) | `https://solr.peviitor.ro/solr/job` | `SOLR_AUTH` |
 | SOLR (company core) | `https://solr.peviitor.ro/solr/company` | `SOLR_AUTH` |
 
 ## Robots.txt
 
-Ciklum Careers permite accesul complet în robots.txt.
+Ciklum Careers permite accesul complet în robots.txt (`Allow: /`).
 
 Scraper-ul folosește rate limiting (1s delay între pagini) și un singur User-Agent identificabil.
 

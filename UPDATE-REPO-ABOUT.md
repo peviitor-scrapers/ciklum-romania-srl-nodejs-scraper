@@ -1,8 +1,11 @@
 # Update Repo About
 
 ## Description
-web scraper pentru a aduce locurile de munca de la Ciklum Romania in platforma peviitor.ro
+Scraper automat pentru locurile de muncă CIKLUM ROMANIA SRL (CIF: 45871772) — extrage din Ciklum Careers (Oracle HCM API), validează via ANAF și publică pe peviitor.ro
 
 ## Topics (exactly 2, per TOPICS.md)
 - job-seeker-ro-spider
 - peviitor-ro
+
+## Workflow file
+`.github/workflows/scrape.yml`
