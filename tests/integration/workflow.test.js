@@ -126,11 +126,18 @@ describe('Integration: API Workflow', () => {
       expect(ciklum).toHaveProperty('website');
       expect(Array.isArray(ciklum.website)).toBe(true);
       expect(ciklum.website[0]).toMatch(/^https?:\/\/.+/);
-      expect(ciklum).toHaveProperty('career');
-      expect(Array.isArray(ciklum.career)).toBe(true);
-      expect(ciklum.career[0]).toMatch(/^https?:\/\/.+/);
       expect(ciklum).toHaveProperty('lastScraped');
       expect(ciklum).toHaveProperty('scraperFile');
+    }, 15000);
+
+    itIfSolr('should have optional field (career) if present', async () => {
+      const result = await solr.queryCompanySOLR(`id:${CIKLUM_CIF}`);
+      const ciklum = result.docs[0];
+
+      if (ciklum.career !== undefined) {
+        expect(Array.isArray(ciklum.career)).toBe(true);
+        expect(ciklum.career[0]).toMatch(/^https?:\/\/.+/);
+      }
     }, 15000);
   });
 

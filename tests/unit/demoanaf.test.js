@@ -94,21 +94,54 @@ describe('src/anaf.js', () => {
 
     it('should retry on HTTP error then succeed', async () => {
       mockFetch
-        .mockResolvedValueOnce(errorResponse(500))
-        .mockResolvedValueOnce(anafCompanyResponse(ANAF_RECORD));
+        .mockResolvedValueOnce(errorResponse(500))           // ANAF attempt 1
+        .mockResolvedValueOnce(errorResponse(500))           // cuifirma fallback
+        .mockResolvedValueOnce(anafCompanyResponse(ANAF_RECORD)); // ANAF attempt 2
 
       const data = await anaf.getCompanyFromANAF('45871772');
 
       expect(data).toBeDefined();
       expect(data.cui).toBe(45871772);
-      expect(mockFetch).toHaveBeenCalledTimes(2);
+      expect(mockFetch).toHaveBeenCalledTimes(3);
     });
 
     it('should throw after exhausting retries', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
 
       await expect(anaf.getCompanyFromANAF('45871772')).rejects.toThrow();
-      expect(mockFetch).toHaveBeenCalledTimes(3);
+      // ANAF(1) + cuifirma + ANAF(2) + ANAF(3) = 4 calls
+      expect(mockFetch).toHaveBeenCalledTimes(4);
+    });
+
+    it('should use cuifirma when ANAF fails', async () => {
+      mockFetch
+        .mockResolvedValueOnce(errorResponse(500))  // ANAF attempt 1
+        .mockResolvedValueOnce({                     // cuifirma fallback
+          ok: true,
+          json: async () => ({
+            jsonrpc: "2.0",
+            id: 1,
+            result: {
+              content: [{
+                type: "text",
+                text: JSON.stringify({
+                  cui: "45871772",
+                  name: "CIKLUM ROMANIA SRL",
+                  is_active: true,
+                  location: "Bucureşti Sectorul 6"
+                })
+              }]
+            }
+          })
+        });
+
+      const data = await anaf.getCompanyFromANAF('45871772');
+
+      expect(data).toBeDefined();
+      expect(data.name).toBe('CIKLUM ROMANIA SRL');
+      expect(data.cui).toBe(45871772);
+      expect(data.inactive).toBe(false);
+      expect(mockFetch).toHaveBeenCalledTimes(2);
     });
   });
 
