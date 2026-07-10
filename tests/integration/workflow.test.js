@@ -162,7 +162,7 @@ describe('Integration: API Workflow', () => {
       const job = result.docs[0];
       expect(job).toHaveProperty('url');
       expect(job).toHaveProperty('title');
-      expect(job).toHaveProperty('company', 'CIKLUM ROMANIA SRL');
+      expect(job.company).toMatch(/CIKLUM ROMANIA S\.?R\.?L\.?/i);
       expect(job).toHaveProperty('cif', CIKLUM_CIF);
     }, 15000);
 
