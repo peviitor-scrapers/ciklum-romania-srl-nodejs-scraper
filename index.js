@@ -55,21 +55,16 @@ async function uploadJobsToSolr(jobs) {
     return;
   }
 
-  const solrJobs = jobs.map(j => {
-    const doc = {
-      cif: CIF,
-      company: COMPANY,
-      title: j.title,
-      url: j.url,
-      location: [j.location],
-      workmode: j.workplaceType,
-      date: new Date().toISOString(),
-      source: 'ciklum.com',
-      status: 'scraped',
-    };
-    if (j.postingDate) doc.postingDate = j.postingDate;
-    return doc;
-  });
+  const solrJobs = jobs.map(j => ({
+    cif: CIF,
+    company: COMPANY,
+    title: j.title,
+    url: j.url,
+    location: [j.location === 'Romania' ? 'București' : j.location],
+    workmode: j.workplaceType,
+    date: new Date().toISOString(),
+    status: 'scraped',
+  }));
 
   const params = new URLSearchParams({ commit: 'true' });
 
