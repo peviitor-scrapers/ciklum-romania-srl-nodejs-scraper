@@ -251,11 +251,11 @@
     <p data-i18n="subtitle">Scraper automat pentru locurile de muncă Ciklum Romania</p>
 
     <div style="margin: 15px 0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
-      <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/scrape.yml" target="_blank">
-        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/scrape.yml/badge.svg" alt="Scraper Status">
+      <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml" target="_blank">
+        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml/badge.svg" alt="Oportunitati SI Cariere">
       </a>
-      <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/test.yml" target="_blank">
-        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/test.yml/badge.svg" alt="Tests Status">
+      <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/automation-testing.yml" target="_blank">
+        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/automation-testing.yml/badge.svg" alt="Automation Tests">
       </a>
       <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/blob/main/CHANGELOG.md" target="_blank">
         <img src="https://img.shields.io/github/package-json/v/sebiboga/ciklum-romania-srl-nodejs-scraper?label=version&color=blue" alt="Version">
@@ -268,6 +268,18 @@
       </a>
       <a href="https://nodejs.org/" target="_blank">
         <img src="https://img.shields.io/badge/node-24-339933?logo=nodedotjs&logoColor=white" alt="Node.js 24">
+      </a>
+      <a href="https://peviitor.ro" target="_blank">
+        <img src="https://img.shields.io/website?url=https%3A%2F%2Fpeviitor.ro&label=peviitor.ro" alt="peviitor.ro">
+      </a>
+      <a href="https://api.peviitor.ro/" target="_blank">
+        <img src="https://img.shields.io/website?url=https%3A%2F%2Fapi.peviitor.ro%2F&label=api.peviitor.ro" alt="api.peviitor.ro">
+      </a>
+      <a href="https://solr.peviitor.ro/solr/" target="_blank">
+        <img src="https://img.shields.io/website?url=https%3A%2F%2Fsolr.peviitor.ro%2Fsolr%2F&label=solr.peviitor.ro" alt="solr.peviitor.ro">
+      </a>
+      <a href="https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/" target="_blank">
+        <img src="https://img.shields.io/github/deployments/sebiboga/ciklum-romania-srl-nodejs-scraper/github-pages?label=GitHub%20Pages" alt="GitHub Pages">
       </a>
       <a href="test-results/" target="_blank">
         <img src="https://img.shields.io/badge/test--results-HTML-9b59b6" alt="Test Results">
@@ -300,8 +312,8 @@
     <div class="card-header" data-i18n="aboutTitle">Despre acest scraper</div>
     <div class="card-body">
       <ul class="features-list" data-i18n="featuresList">
-        <li data-i18n="f1">Extrage job-uri de pe Ciklum Careers API (Oracle HCM)</li>
-        <li data-i18n="f2">Parsează cu fetch (JSON API)</li>
+        <li data-i18n="f1">Extrage job-uri de pe Ciklum Careers prin Chromium headless</li>
+        <li data-i18n="f2">Renderizează pagina SPA și parsează DOM-ul</li>
         <li data-i18n="f3">Validează compania via ANAF + CUIFirma fallback</li>
         <li data-i18n="f4">Verifică și elimină job-uri expirate</li>
         <li data-i18n="f5">Salvează în SOLR pentru peviitor.ro</li>
@@ -317,7 +329,7 @@
   </div>
 
   <div class="btn-wrapper" style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
-    <a class="btn" href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/scrape.yml" target="_blank">
+    <a class="btn" href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml" target="_blank">
       <span>&#9654;</span> <span data-i18n="runBtn">Rulează Scraper</span>
     </a>
     <a class="btn" href="test-results/" style="background:#7d6b5a;">
@@ -368,8 +380,8 @@ const i18n = {
     jobsLabel: "Jobs",
     verifiedLabel: "Verified",
     aboutTitle: "About this scraper",
-    f1: "Extracts jobs from Ciklum Careers API (Oracle HCM)",
-    f2: "Parses with fetch (JSON API)",
+    f1: "Extracts jobs from Ciklum Careers via Chromium headless",
+    f2: "Renders SPA page and parses the DOM",
     f3: "Validates company via ANAF + CUIFirma fallback",
     f4: "Checks and removes expired jobs",
     f5: "Saves to SOLR for peviitor.ro",
@@ -387,8 +399,8 @@ const i18n = {
     jobsLabel: "Locuri de muncă",
     verifiedLabel: "Verificate",
     aboutTitle: "Despre acest scraper",
-    f1: "Extrage locuri de muncă de pe Ciklum Careers API (Oracle HCM)",
-    f2: "Parsează cu fetch (JSON API)",
+    f1: "Extrage locuri de muncă de pe Ciklum Careers prin Chromium headless",
+    f2: "Renderizează pagina SPA și parsează DOM-ul",
     f3: "Validează compania via ANAF + CUIFirma fallback",
     f4: "Verifică și elimină locuri de muncă expirate",
     f5: "Salvează în SOLR pentru peviitor.ro",
