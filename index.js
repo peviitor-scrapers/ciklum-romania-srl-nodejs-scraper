@@ -126,7 +126,12 @@ async function main() {
     career: [companyConfig.careerUrl],
     lastScraped: new Date().toISOString().split('T')[0],
   };
-  const md = generateJobsMarkdown(companyData, uniqueJobs);
+  const mdJobs = uniqueJobs.map(j => ({
+    ...j,
+    location: [j.location || 'București'],
+    workmode: j.workplaceType,
+  }));
+  const md = generateJobsMarkdown(companyData, mdJobs);
   fs.mkdirSync('docs', { recursive: true });
   fs.writeFileSync('docs/jobs.md', md, 'utf-8');
   console.log('Generated docs/jobs.md');
