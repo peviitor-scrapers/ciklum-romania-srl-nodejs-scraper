@@ -12,7 +12,7 @@
 | Field        | Type     | Description |
 |--------------|----------|-------------|
 | brand        | string   | Commercial brand name (e.g. "Ciklum") |
-| group        | string   | Parent company group |
+| group        | string   | Parent company group (e.g. "Ciklum") |
 | status       | string   | "activ", "suspendat", "inactiv", or "radiat" |
 | location     | string[] | Romanian cities/addresses. DIACRITICS ACCEPTED. Multi-valued array |
 | website      | string[] | Official company website. Must be valid HTTP/HTTPS URL |

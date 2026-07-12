@@ -38,9 +38,8 @@ When working on this scraper:
 ## Technologies
 
 - **Node.js & JavaScript** - For scraping and data extraction
-- **Chromium headless** - Renders the Oracle HCM SPA (`--virtual-time-budget=10000`; see [CHROMIUM-RENDERING.md](CHROMIUM-RENDERING.md))
 - **Apache SOLR** - For data storage and indexing
-- **OpenCode + Big Pickle** - For development
+- **Claude Code** - For development
 
 ## Workflow Steps
 
@@ -68,7 +67,7 @@ export SOLR_AUTH=your-solr-credentials
 # Run the full scraper workflow (single command)
 node index.js
 
-# Test mode (one page only, limit 25 jobs)
+# Test mode (one page only, limit 10 jobs)
 node index.js --test
 ```
 
@@ -83,8 +82,7 @@ When running `node index.js`, the following steps happen automatically:
 3. **Scrape jobs** - Extract jobs from Ciklum careers API (Romania only)
 4. **Transform for SOLR** - Fix locations (only Romanian cities), normalize fields
 5. **Upsert to SOLR** - Add/update jobs (SOLR handles duplicates by URL)
-6. **Generate docs/jobs.md** - Markdown file with company info + all current jobs
-7. **Show Summary** - Log job counts
+6. **Show Summary** - Log job counts
 
 **Important**: We do NOT delete existing jobs! This preserves jobs from other sources (ANOFM, etc).
 
@@ -101,13 +99,14 @@ querySOLR(CIF) - just count, don't delete
     │
     ▼
 company.js (validate company)
-    ├── ANAF API ──► get company name + CIF
-    │   └── cuifirma.ro fallback if ANAF unavailable
+    ├── load cache (tmp/company.json → company.json)
+    │   └── if fresh (<7 days), skip ANAF entirely
+    ├── ANAF API ──► get company name + CIF (only if cache stale/missing)
     ├── Peviitor API ──► validate company model
     └── SOLR ──► check existing jobs count
     │
     ▼ (if active)
-scrape Ciklum (Chromium renders SPA → parse DOM; see CHROMIUM-RENDERING.md)
+scrape Ciklum API (jobs for Romania)
     │
     ▼
 transformJobsForSOLR()
@@ -131,22 +130,29 @@ generateJobsMarkdown() → docs/jobs.md
 | `config/company.json` | **Single source of truth** for company identity (CIF, brand, URLs, API params) |
 | `config/company.js` | ESM wrapper that loads `config/company.json` for Node code |
 | `index.js` | Main entry point - full workflow: validate company → scrape → transform → upsert → generate docs/jobs.md |
-| `company.js` | Validates company via ANAF + Peviitor; caches in root `company.json` and `tmp/company.json` |
+| `company.js` | Validates company via ANAF + Peviitor; caches in root `company.json` (7-day TTL) and `tmp/company.json` |
 | `solr.js` | SOLR operations module - query, delete, upsert jobs + standalone commands |
 | `validate-jobs.js` | Manual deep validator (content-aware); thin CLI wrapper over `src/job-validator.js` |
-| `src/anaf.js` | ANAF API core module - searchCompany(brand) and getCompanyFromANAF(cif) with 3-retry/2s-backoff + cuifirma fallback |
-| `src/cuifirma.js` | CUIFirma MCP fallback - queries cuifirma.ro when ANAF is unavailable |
+| `src/anaf.js` | ANAF API core module - searchCompany(brand) and getCompanyFromANAF(cif) with 3-retry/2s-backoff |
 | `src/markdown-generator.js` | Generates `docs/jobs.md` with company info and all scraped jobs |
 | `src/job-validator.js` | Shared validation primitives: `validateByHead`, `validateByContent`, `DEFAULT_EXPIRED_KEYWORDS` |
 | `demoanaf.js` | CLI entry point for ANAF module (thin wrapper around src/anaf.js) |
 | `tests/validate-ciklum-jobs.js` | CI fast validator (HEAD only); thin CLI over `src/job-validator.js` + `solr.js` |
+| `tests/unit/index.test.js` | Unit tests for parseApiJobs, mapToJobModel, transformJobsForSOLR |
+| `tests/unit/company.test.js` | Unit tests for validateAndGetCompany and fallback caching |
+| `tests/unit/solr.test.js` | Unit tests for SOLR query, upsert, delete operations |
+| `tests/unit/demoanaf.test.js` | Unit tests for ANAF search and company retrieval |
+| `tests/integration/workflow.test.js` | Live integration tests - ANAF + SOLR |
+| `tests/e2e/scraper.test.js` | End-to-end tests with real Ciklum API |
+| `tests/consistency/public.test.js` | Verifies repo is public on GitHub |
+| `tests/consistency/repo.test.js` | Verifies branch, Pages, secrets, workflow files |
+| `tests/consistency/topics.test.js` | Verifies required repo topics |
+| `tests/consistency/workflow-naming.test.js` | Validates workflow naming conventions |
 
 ## API Endpoints
 
-- **Ciklum Careers**: `https://explore-jobs.ciklum.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions` — Oracle HCM REST API
 - **DemoANAF Search**: `https://demoanaf.ro/api/search?q=BRAND` - Search companies by name/brand
 - **DemoANAF Company**: `https://demoanaf.ro/api/company/:cui` - Get company details by CIF
-- **CUIFirma MCP**: `https://cuifirma.ro/mcp/cuifirma` - Fallback when ANAF is unavailable
 - **Peviitor API**: `https://api.peviitor.ro/v1/company/`
 - **Solr**: `https://solr.peviitor.ro/solr/job` (auth: via `SOLR_AUTH` environment variable)
 
@@ -156,12 +162,15 @@ The scraper is intentionally slow to be a good citizen:
 
 | Setting | Value | Where |
 |---------|-------|-------|
-| Delay between pages | 1000 ms | `index.js` — `sleep(1000)` |
-| Page size | 25 results | Oracle HCM API limit |
-| Max pages | 10 | `index.js` — `MAX_PAGES` |
+| Delay between pages | 1000 ms | `index.js` — `sleep(1000)` in `scrapeAllListings()` |
+| Page size | 10 jobs | `index.js` — `PAGE_SIZE` constant |
+| Max pages | 10 | `index.js` — `MAX_PAGES` in `scrapeAllListings()` |
+| Request timeout | 10000 ms | `index.js` — `TIMEOUT` constant |
 | ANAF retries | 3 attempts, 2s exponential backoff | `src/anaf.js` |
 | Concurrency | 1 (sequential) | No `Promise.all` for paginated fetches |
 | User-Agent | `job_seeker_ro_spider` | Identifies the scraper in server logs |
+
+Derived scrapers should keep these defaults unless the target site explicitly permits otherwise.
 
 ## Environment Variables
 
@@ -217,3 +226,11 @@ npm test
 ## Temporary Files
 
 All temporary/scratch files must be placed in `tmp/` inside the project root (never outside the project). The `tmp/` directory is in `.gitignore` and will not be committed.
+
+## Technical Debt / Completed
+
+- [x] Extract demoanaf.js to separate module (#2)
+- [x] Write Unit Tests for all modules (#3)
+- [x] Write Integration Tests in separate folder (#4)
+- [x] Write E2E automated tests in separate folder (#5)
+- [ ] Write Unit/Component/E2E tests for index.js

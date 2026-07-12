@@ -6,6 +6,10 @@ jest.unstable_mockModule('node-fetch', () => ({
   default: mockFetch
 }));
 
+jest.unstable_mockModule('../../src/cuifirma.js', () => ({
+  getCompanyFromCuifirma: jest.fn()
+}));
+
 function anafSearchResponse(results) {
   return {
     ok: true,
@@ -34,21 +38,34 @@ const ANAF_RECORD = {
   address: 'BD IULIU MANIU, NR.6L, SECTOR 6, BUCUREŞTI',
   caenCode: '6210',
   inactive: false,
-  registrationNumber: 'J2022005859401',
+  registrationNumber: 'J2014005735405',
   vatRegistered: true,
   onrcStatusLabel: 'Funcțiune',
   legalForm: 'SRL'
 };
 
+const CACHED_DATA = {
+  cui: 45871772,
+  name: 'CIKLUM ROMANIA SRL',
+  address: 'MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD IULIU MANIU, NR.6L',
+  registrationNumber: 'J2014005735405',
+  caenCode: '6210',
+  inactive: false,
+  onrcStatusLabel: 'Funcțiune'
+};
+
 describe('src/anaf.js', () => {
   let anaf;
+  let cuifirma;
 
   beforeAll(async () => {
     anaf = await import('../../src/anaf.js');
+    cuifirma = await import('../../src/cuifirma.js');
   });
 
   beforeEach(() => {
     mockFetch.mockReset();
+    cuifirma.getCompanyFromCuifirma.mockReset();
   });
 
   describe('searchCompany', () => {
@@ -68,16 +85,37 @@ describe('src/anaf.js', () => {
     it('should return empty array for non-existent brand', async () => {
       mockFetch.mockResolvedValue(anafSearchResponse([]));
 
-      const results = await anaf.searchCompany('NonExistentBrandXYZ');
+      const results = await anaf.searchCompany('NonExistentBrandXYZ123');
 
       expect(Array.isArray(results)).toBe(true);
       expect(results.length).toBe(0);
+    });
+
+    it('should include statusLabel in results', async () => {
+      mockFetch.mockResolvedValue(anafSearchResponse([
+        { cui: 45871772, name: 'CIKLUM ROMANIA SRL', statusLabel: 'Funcțiune' }
+      ]));
+
+      const results = await anaf.searchCompany('Ciklum');
+
+      expect(results[0]).toHaveProperty('statusLabel', 'Funcțiune');
     });
 
     it('should throw on HTTP error', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
 
       await expect(anaf.searchCompany('Ciklum')).rejects.toThrow('ANAF search error: 500');
+    });
+
+    it('should encode brand name in URL', async () => {
+      let capturedUrl;
+      mockFetch.mockImplementation((url) => {
+        capturedUrl = url;
+        return Promise.resolve(anafSearchResponse([]));
+      });
+
+      await anaf.searchCompany('Ciklum SRL');
+      expect(capturedUrl).toContain(encodeURIComponent('Ciklum SRL'));
     });
   });
 
@@ -90,58 +128,46 @@ describe('src/anaf.js', () => {
       expect(data).toBeDefined();
       expect(data.cui).toBe(45871772);
       expect(data.name).toBe('CIKLUM ROMANIA SRL');
+      expect(data).toHaveProperty('address');
+      expect(data).toHaveProperty('registrationNumber');
     });
 
-    it('should retry on HTTP error then succeed', async () => {
-      mockFetch
-        .mockResolvedValueOnce(errorResponse(500))           // ANAF attempt 1
-        .mockResolvedValueOnce(errorResponse(500))           // cuifirma fallback
-        .mockResolvedValueOnce(anafCompanyResponse(ANAF_RECORD)); // ANAF attempt 2
-
-      const data = await anaf.getCompanyFromANAF('45871772');
-
-      expect(data).toBeDefined();
-      expect(data.cui).toBe(45871772);
-      expect(mockFetch).toHaveBeenCalledTimes(3);
-    });
-
-    it('should throw after exhausting retries', async () => {
+    it('should fall back to cuifirma when ANAF fails', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
-
-      await expect(anaf.getCompanyFromANAF('45871772')).rejects.toThrow();
-      // ANAF(1) + cuifirma + ANAF(2) + ANAF(3) = 4 calls
-      expect(mockFetch).toHaveBeenCalledTimes(4);
-    });
-
-    it('should use cuifirma when ANAF fails', async () => {
-      mockFetch
-        .mockResolvedValueOnce(errorResponse(500))  // ANAF attempt 1
-        .mockResolvedValueOnce({                     // cuifirma fallback
-          ok: true,
-          json: async () => ({
-            jsonrpc: "2.0",
-            id: 1,
-            result: {
-              content: [{
-                type: "text",
-                text: JSON.stringify({
-                  cui: "45871772",
-                  name: "CIKLUM ROMANIA SRL",
-                  is_active: true,
-                  location: "Bucureşti Sectorul 6"
-                })
-              }]
-            }
-          })
-        });
+      cuifirma.getCompanyFromCuifirma.mockResolvedValue({
+        cui: 45871772,
+        name: 'CIKLUM ROMANIA SRL'
+      });
 
       const data = await anaf.getCompanyFromANAF('45871772');
 
       expect(data).toBeDefined();
       expect(data.name).toBe('CIKLUM ROMANIA SRL');
-      expect(data.cui).toBe(45871772);
-      expect(data.inactive).toBe(false);
-      expect(mockFetch).toHaveBeenCalledTimes(2);
+      expect(cuifirma.getCompanyFromCuifirma).toHaveBeenCalledWith('45871772');
+    });
+
+    it('should throw when both ANAF and cuifirma fail', async () => {
+      mockFetch.mockResolvedValue(errorResponse(500));
+      cuifirma.getCompanyFromCuifirma.mockRejectedValue(new Error('cuifirma error'));
+
+      await expect(anaf.getCompanyFromANAF('45871772')).rejects.toThrow();
+    });
+
+    it('should handle API-level error response', async () => {
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: async () => ({ success: false, error: { message: 'Company not found' } })
+      });
+      cuifirma.getCompanyFromCuifirma.mockResolvedValue(null);
+
+      await expect(anaf.getCompanyFromANAF('00000000')).rejects.toThrow();
+    });
+
+    it('should return null when data is null', async () => {
+      mockFetch.mockResolvedValue(anafCompanyResponse(null));
+
+      const data = await anaf.getCompanyFromANAF('45871772');
+      expect(data).toBeNull();
     });
   });
 
@@ -156,14 +182,16 @@ describe('src/anaf.js', () => {
 
     it('should use cached data when API fails', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
+      cuifirma.getCompanyFromCuifirma.mockRejectedValue(new Error('cuifirma error'));
 
-      const data = await anaf.getCompanyFromANAFWithFallback('45871772', ANAF_RECORD);
+      const data = await anaf.getCompanyFromANAFWithFallback('45871772', CACHED_DATA);
 
-      expect(data).toEqual(ANAF_RECORD);
+      expect(data).toEqual(CACHED_DATA);
     });
 
     it('should throw when API fails and no cache available', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
+      cuifirma.getCompanyFromCuifirma.mockRejectedValue(new Error('cuifirma error'));
 
       await expect(anaf.getCompanyFromANAFWithFallback('45871772')).rejects.toThrow();
     });

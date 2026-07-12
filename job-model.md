@@ -5,6 +5,7 @@
 | Field  | Type   | Description |
 |--------|--------|-------------|
 | url    | string | Full URL to job detail page. Must be valid HTTP/HTTPS URL |
+
 | title  | string | Position title. Max 200 chars, no HTML, trimmed whitespace. DIACRITICS ACCEPTED (ăâîșțĂÂÎȘȚ) |
 
 ## Optional Fields

@@ -3,6 +3,21 @@
 ## Project
 Ciklum scraper for peviitor.ro (Node.js, ESM, Jest)
 
+## 🎯 Goal: Structural Identity with EPAM Template
+**EPAM repo** (`/home/sebi/epam-systems-international-srl-nodejs-scraper/`) is the **canonical template**. This repo must be **structurally identical** to EPAM — same file structure, same code patterns, same jest config, same workflow structure — with ONLY company-specific values swapped (CIF, brand, legal name, API URLs, career page URL).
+
+**When in doubt, diff against EPAM.** If this repo has a structural difference vs EPAM that isn't a company-specific swap, it's a bug.
+
+## 📐 This Repo Is a Template
+This repo is the **reference implementation** for all Node.js scrapers in the peviitor.ro ecosystem. Other scrapers are derived from it.
+
+**🤖 If you've been asked to CREATE or RECREATE a derived scraper, read [AI-DERIVATION-GUIDE.md](AI-DERIVATION-GUIDE.md) first.** That file is the consolidated playbook covering every step + all known pitfalls from past derivations.
+
+When making changes to this template:
+- **All company-specific identity lives in `config/company.json`** (CIF, brand, legalName, URLs, API params). Read from `config/company.js` in Node code, or via `jq` in workflows. Never hardcode in source files.
+- **Only the API parsing logic in `index.js`** (`fetchJobsPage`, `parseApiJobs`) is Ciklum-specific. The output shape (`mapToJobModel`, `transformJobsForSOLR`) must stay uniform across derived scrapers.
+- **If you add a new file, update [CONTRIBUTING.md](CONTRIBUTING.md)** — the derivation checklist must stay accurate.
+
 ## Critical Rules
 
 ### 0. Background tasks — always pass `--repo` explicitly to `gh`
@@ -11,7 +26,7 @@ When polling a workflow run with `until [ "$(gh run view ID --json status -q .st
 
 **Always specify the repo explicitly:**
 ```bash
-gh run view <RUN_ID> --repo sebiboga/ciklum-romania-srl-nodejs-scraper --json status -q .status
+gh run view <RUN_ID> --repo sebiboga/<derived-repo>-nodejs-scraper --json status -q .status
 ```
 
 Before starting any `gh run watch` or polling loop in the background, sanity-check:
@@ -67,12 +82,11 @@ npm run test:consistency
 
 ### 7. Module Structure
 - `config/company.json` + `config/company.js` — single source of truth for company identity
-- `src/anaf.js` — core ANAF library (imported by company.js); retry logic: 3 retries, 2s exponential backoff; includes cuifirma.ro fallback
-- `src/cuifirma.js` — CUIFirma MCP fallback for ANAF demoanaf.ro
+- `src/anaf.js` — core ANAF library (imported by company.js); retry logic: 3 retries, 2s exponential backoff
 - `src/markdown-generator.js` — generates `docs/jobs.md` after each scrape; called from index.js
 - `src/job-validator.js` — shared `validateByHead` + `validateByContent` used by both validator CLIs
 - `demoanaf.js` — CLI wrapper around src/anaf.js
-- `company.js` — company validation (ANAF + Peviitor + SOLR); root `company.json` is ANAF cache committed to repo
+- `company.js` — company validation (ANAF + Peviitor + SOLR); root `company.json` is a 7-day ANAF cache committed to repo, with stale fallback
 - `solr.js` — SOLR operations
 - `validate-jobs.js` — manual deep validator (content-aware); thin wrapper over src/job-validator.js
 - `tests/validate-ciklum-jobs.js` — CI fast validator (HEAD only); thin wrapper over src/job-validator.js + solr.js
@@ -80,19 +94,11 @@ npm run test:consistency
 
 ### 8. Caching Behavior
 - `tmp/company.json` — per-run scratch cache (gitignored)
-- `company.json` (root) — committed cache, refreshed when stale
+- `company.json` (root) — committed cache, refreshed every 7 days (configurable via `CACHE_MAX_AGE_DAYS` in company.js)
 - If ANAF is unreachable AND cache is stale, the code falls back to the stale cache rather than failing the scrape
 - `docs/company.json` is regenerated on every scrape so GitHub Pages can read company identity
 
-### 9. Scraper Architecture
-- Uses Chromium headless with `--dump-dom --virtual-time-budget=10000` to render the SPA (see [CHROMIUM-RENDERING.md](CHROMIUM-RENDERING.md))
-- Ciklum careers page is an Oracle HCM SPA, jobs load via JavaScript — the Oracle HCM REST API requires session cookies not available externally
-- Chromium renders the full page, waits 10s for JS to fetch jobs, then we parse the rendered DOM
-- DOM parsing: extract `href`, `job-tile__title`, `primaryLocation`, `workplaceTypeName` via regex
-- Job URL: `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/{Id}`
-- Romania filter: `selectedLocationsFacet=300000000468495` in the URL
-
-### 10. Auto-Heal Issues
+### 9. Auto-Heal Issues
 When the `Automation Tests` workflow fails, a **GitHub Issue** is auto-created with label `auto-heal`. The issue contains:
 - Run URL, branch, commit, and trigger event
 - Instructions for opencode to investigate, fix, commit, push, and close

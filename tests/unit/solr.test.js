@@ -43,10 +43,9 @@ describe('solr.js', () => {
       expect(auth).toBe('test:test');
     });
 
-    it('should return undefined when not set', () => {
+    it('should throw when not set', () => {
       delete process.env.SOLR_AUTH;
-      const auth = solr.getSolrAuth();
-      expect(auth).toBeUndefined();
+      expect(() => solr.getSolrAuth()).toThrow('SOLR_AUTH not set in environment');
       process.env.SOLR_AUTH = 'test:test';
     });
   });
@@ -63,6 +62,7 @@ describe('solr.js', () => {
       expect(result).toHaveProperty('numFound', 2);
       expect(result).toHaveProperty('docs');
       expect(Array.isArray(result.docs)).toBe(true);
+      expect(result.docs).toHaveLength(2);
     });
 
     it('should return empty docs when no jobs found', async () => {
@@ -76,7 +76,7 @@ describe('solr.js', () => {
 
     it('should throw when SOLR_AUTH is missing', async () => {
       delete process.env.SOLR_AUTH;
-      await expect(solr.querySOLR('45871772')).rejects.toThrow('SOLR_AUTH not set');
+      await expect(solr.querySOLR('45871772')).rejects.toThrow('SOLR_AUTH not set in environment');
       process.env.SOLR_AUTH = 'test:test';
     });
 
@@ -99,6 +99,14 @@ describe('solr.js', () => {
       expect(result.docs[0].brand).toBe('Ciklum');
     });
 
+    it('should return empty when company not found', async () => {
+      mockFetch.mockResolvedValue(makeSolrResponse(0, []));
+
+      const result = await solr.queryCompanySOLR('id:00000000');
+
+      expect(result.numFound).toBe(0);
+    });
+
     it('should throw on HTTP error', async () => {
       mockFetch.mockResolvedValue(makeErrorResponse(401, 'Unauthorized'));
 
@@ -113,8 +121,8 @@ describe('solr.js', () => {
       const testJob = {
         url: 'https://test.com/job1',
         title: 'Test Job',
-        company: 'CIKLUM ROMANIA SRL',
-        cif: '45871772',
+        company: 'TEST COMPANY',
+        cif: '12345678',
         status: 'scraped'
       };
 
@@ -126,6 +134,12 @@ describe('solr.js', () => {
 
       await expect(solr.upsertJobs([{ url: 'https://test.com/bad' }])).rejects.toThrow('SOLR upsert error: 400');
     });
+
+    it('should throw when SOLR_AUTH is missing', async () => {
+      delete process.env.SOLR_AUTH;
+      await expect(solr.upsertJobs([])).rejects.toThrow('SOLR_AUTH not set in environment');
+      process.env.SOLR_AUTH = 'test:test';
+    });
   });
 
   describe('deleteJobByUrl', () => {
@@ -134,6 +148,12 @@ describe('solr.js', () => {
 
       await expect(solr.deleteJobByUrl('https://test.com/old-job')).resolves.not.toThrow();
     });
+
+    it('should throw on HTTP error', async () => {
+      mockFetch.mockResolvedValue(makeErrorResponse(500, 'Error'));
+
+      await expect(solr.deleteJobByUrl('https://test.com/bad')).rejects.toThrow('SOLR delete error: 500');
+    });
   });
 
   describe('deleteJobsByCIF', () => {
@@ -141,6 +161,12 @@ describe('solr.js', () => {
       mockFetch.mockResolvedValue(makeSolrResponse(0, []));
 
       await expect(solr.deleteJobsByCIF('45871772')).resolves.not.toThrow();
+    });
+
+    it('should throw on HTTP error', async () => {
+      mockFetch.mockResolvedValue(makeErrorResponse(500, 'Error'));
+
+      await expect(solr.deleteJobsByCIF('45871772')).rejects.toThrow('SOLR delete error: 500');
     });
   });
 
@@ -161,13 +187,25 @@ describe('solr.js', () => {
     it('should have valid CIF format for all jobs', async () => {
       mockFetch.mockResolvedValue(makeSolrResponse(2, [
         { url: 'https://test.com/1', title: 'Job 1', cif: '45871772' },
-        { url: 'https://test.com/2', title: 'Job 2', cif: '45871772' }
+        { url: 'https://test.com/2', title: 'Job 2', cif: '12345678' }
       ]));
 
       const result = await solr.querySOLR('45871772');
 
       for (const job of result.docs) {
         expect(job.cif).toMatch(/^\d{8}$/);
+      }
+    });
+
+    it('should detect invalid CIF format', async () => {
+      mockFetch.mockResolvedValue(makeSolrResponse(1, [
+        { url: 'https://test.com/1', title: 'Job 1', cif: 'abc' }
+      ]));
+
+      const result = await solr.querySOLR('abc');
+
+      for (const job of result.docs) {
+        expect(job.cif).not.toMatch(/^\d{8}$/);
       }
     });
 

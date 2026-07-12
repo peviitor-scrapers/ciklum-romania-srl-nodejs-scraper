@@ -3,17 +3,9 @@ import { getCompanyFromCuifirma } from "./cuifirma.js";
 
 const ANAF_API_URL = "https://demoanaf.ro/api/company/";
 const ANAF_SEARCH_URL = "https://demoanaf.ro/api/search";
-const MAX_RETRIES = 3;
-const RETRY_DELAY_MS = 2000;
-
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 export async function getCompanyFromANAF(cif) {
-  let lastError = null;
-
-  // Try ANAF once first
+  // Try ANAF once
   try {
     const url = `${ANAF_API_URL}${cif}`;
     const res = await fetch(url, {
@@ -21,23 +13,20 @@ export async function getCompanyFromANAF(cif) {
     });
 
     if (!res.ok) {
-      lastError = new Error(`ANAF API error: ${res.status}`);
-      console.log(`ANAF attempt 1/${MAX_RETRIES} failed: ${res.status}`);
+      console.log(`ANAF failed: ${res.status}`);
     } else {
       const json = await res.json();
       if (json.success === false) {
-        lastError = new Error(json.error?.message || "ANAF returned error");
-        console.log(`ANAF attempt 1/${MAX_RETRIES} failed: ${json.error?.message}`);
+        console.log(`ANAF failed: ${json.error?.message}`);
       } else {
         return json.data || null;
       }
     }
   } catch (err) {
-    lastError = err;
-    console.log(`ANAF attempt 1/${MAX_RETRIES} failed: ${err.message}`);
+    console.log(`ANAF failed: ${err.message}`);
   }
 
-  // ANAF failed — try cuifirma.ro immediately
+  // ANAF failed — try cuifirma.ro
   try {
     console.log("Trying CUIFirma as fallback...");
     const data = await getCompanyFromCuifirma(cif);
@@ -50,39 +39,7 @@ export async function getCompanyFromANAF(cif) {
     console.log(`CUIFirma fallback failed: ${err.message}`);
   }
 
-  // Both failed — retry ANAF for remaining attempts
-  for (let attempt = 2; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const url = `${ANAF_API_URL}${cif}`;
-      const res = await fetch(url, {
-        headers: { "User-Agent": "job_seeker_ro_spider" }
-      });
-
-      if (!res.ok) {
-        lastError = new Error(`ANAF API error: ${res.status}`);
-        console.log(`ANAF attempt ${attempt}/${MAX_RETRIES} failed: ${res.status}, retrying...`);
-        if (attempt < MAX_RETRIES) await sleep(RETRY_DELAY_MS);
-        continue;
-      }
-
-      const json = await res.json();
-
-      if (json.success === false) {
-        lastError = new Error(json.error?.message || "ANAF returned error");
-        console.log(`ANAF attempt ${attempt}/${MAX_RETRIES} failed: ${json.error?.message}, retrying...`);
-        if (attempt < MAX_RETRIES) await sleep(RETRY_DELAY_MS);
-        continue;
-      }
-
-      return json.data || null;
-    } catch (err) {
-      lastError = err;
-      console.log(`ANAF attempt ${attempt}/${MAX_RETRIES} error: ${err.message}, retrying...`);
-      if (attempt < MAX_RETRIES) await sleep(RETRY_DELAY_MS);
-    }
-  }
-
-  throw lastError || new Error("ANAF API failed after retries");
+  throw new Error(`ANAF and CUIFirma both failed for CIF ${cif}`);
 }
 
 export async function getCompanyFromANAFWithFallback(cif, cachedData = null) {

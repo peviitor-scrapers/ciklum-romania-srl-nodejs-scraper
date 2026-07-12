@@ -1,63 +1,30 @@
 {
-  "validatedAt": "2026-06-08T00:00:00.000Z",
+  "validatedAt": "2026-07-12T06:28:37.427Z",
   "source": "ANAF",
   "brand": "Ciklum",
   "anaf": {
     "cui": 45871772,
     "name": "CIKLUM ROMANIA SRL",
-    "address": "MUNICIPIUL BUCUREŞTI, SECTOR 6, BD IULIU MANIU, NR.6L, CLADIREA CAMPUS 6.1, ET.1+2",
-    "registrationNumber": "J2022005859401",
-    "phone": "",
-    "fax": "",
-    "postalCode": "",
+    "address": "BD IULIU MANIU, NR.6L, SECTOR 6, BUCUREŞTI",
     "caenCode": "6210",
-    "iban": "",
-    "registrationState": "",
-    "registrationDate": "2022-03-29",
-    "fiscalAuthority": "",
-    "ownershipForm": "PROPR.PRIVATA-CAPITAL PRIVAT STRAIN",
-    "organizationForm": "PERSOANA JURIDICA",
-    "legalForm": "SOCIETATE COMERCIALĂ CU RĂSPUNDERE LIMITATĂ",
-    "vatRegistered": true,
-    "vatPeriods": [],
-    "cashBasisVat": false,
-    "cashBasisVatStart": null,
-    "cashBasisVatEnd": null,
     "inactive": false,
-    "inactiveSince": null,
-    "reactivatedSince": null,
-    "splitVat": false,
+    "vatRegistered": true,
     "eFacturaRegistered": false,
     "headquartersAddress": {
-      "street": "Bd. Iuliu Maniu",
-      "number": "6L",
-      "locality": "Sector 6 Mun. Bucureşti",
-      "county": "MUNICIPIUL BUCUREŞTI",
-      "country": "",
-      "postalCode": ""
-    },
-    "fiscalAddress": {
-      "street": "",
-      "number": "",
-      "locality": "",
-      "county": "",
-      "country": "",
-      "postalCode": ""
-    },
-    "administrators": [],
-    "authorizedCaenCodes": ["6210"],
-    "onrcStatus": 1048,
-    "onrcStatusLabel": "Funcțiune"
+      "locality": "Sector 6 Mun. Bucureşti"
+    }
   },
-  "peviitor": null,
+  "peviitor": {
+    "company": "Ciklum"
+  },
   "summary": {
     "company": "CIKLUM ROMANIA SRL",
     "cif": "45871772",
     "active": true,
     "inactiveSince": null,
     "reactivatedSince": null,
-    "address": "MUNICIPIUL BUCUREŞTI, SECTOR 6, BD IULIU MANIU, NR.6L, CLADIREA CAMPUS 6.1, ET.1+2",
-    "registrationNumber": "J2022005859401",
+    "address": "BD IULIU MANIU, NR.6L, SECTOR 6, BUCUREŞTI",
+    "registrationNumber": null,
     "caenCode": "6210",
     "vatRegistered": true,
     "eFacturaRegistered": false

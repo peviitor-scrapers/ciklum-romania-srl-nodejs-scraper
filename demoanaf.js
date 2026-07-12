@@ -1,11 +1,23 @@
 #!/usr/bin/env node
 
+/**
+ * CLI entry point for the ANAF API module
+ * 
+ * Usage:
+ *   node demoanaf.js search <brand>    - Search for companies
+ *   node demoanaf.js <cif>             - Get company details by CIF
+ * 
+ * The core library is in src/anaf.js — this file only provides
+ * the standalone CLI interface.
+ */
+
 import { getCompanyFromANAF, searchCompany } from "./src/anaf.js";
+import companyConfig from "./config/company.js";
 
 const args = process.argv.slice(2);
 
 if (args[0] === "search") {
-  const brand = args[1] || "Ciklum";
+  const brand = args[1] || companyConfig.brand;
   console.log(`=== Searching for: ${brand} ===\n`);
 
   searchCompany(brand)
@@ -20,7 +32,7 @@ if (args[0] === "search") {
       process.exit(1);
     });
 } else {
-  const cif = args[0] || "45871772";
+  const cif = args[0] || companyConfig.cif;
   console.log(`=== Testing ANAF API for CIF: ${cif} ===\n`);
 
   getCompanyFromANAF(cif)

@@ -14,8 +14,7 @@
 
 | File | Description |
 |------|-------------|
-| `src/anaf.js` | ANAF API core module - exports getCompanyFromANAF(cif), getCompanyFromANAFWithFallback(cif, cached), searchCompany(brandName). Includes cuifirma.ro fallback. |
-| `src/cuifirma.js` | CUIFirma MCP fallback - queries cuifirma.ro when ANAF demoanaf.ro is unavailable |
+| `src/anaf.js` | ANAF API core module - exports getCompanyFromANAF(cif), getCompanyFromANAFWithFallback(cif, cached), searchCompany(brandName) |
 | `src/markdown-generator.js` | Generates docs/jobs.md - exports generateJobsMarkdown(companyData, jobs) |
 | `src/job-validator.js` | Shared validation primitives - exports validateByHead(url), validateByContent(url, opts), DEFAULT_EXPIRED_KEYWORDS. Used by both `validate-jobs.js` and `tests/validate-ciklum-jobs.js`. |
 
@@ -23,7 +22,7 @@
 
 | File | Description |
 |------|-------------|
-| `config/company.json` | **Single source of truth for company identity.** All scraper code, CI workflows, and the static HTML read from this file. |
+| `config/company.json` | **Single source of truth for company identity.** All scraper code, CI workflows, and the static HTML read from this file. To derive a scraper for a different company, this is the primary file to edit. |
 | `config/company.js` | ESM wrapper that imports and exposes `config/company.json` to Node code |
 
 ## Test Files — tests/
@@ -32,7 +31,7 @@
 |------|-------------|
 | `tests/package.json` | Jest config for test suite - experimental VM modules, test scripts (unit/integration/e2e/consistency) |
 | `tests/company.json` | Mock ANAF company data for Ciklum used in unit tests |
-| `tests/validate-ciklum-jobs.js` | **Ciklum-specific fast validator (used by CI).** HEAD requests only, hardcoded Ciklum CIF. Called by `automation-testing.yml`. Supports `--dry-run` and `--delete`. |
+| `tests/validate-ciklum-jobs.js` | **Ciklum-specific fast validator (used by CI).** HEAD requests only, hardcoded Ciklum CIF. Called nightly by `automation-testing.yml`. Supports `--dry-run` and `--delete`. |
 | `tests/unit/index.test.js` | Unit tests for index.js - parseApiJobs, mapToJobModel, transformJobsForSOLR |
 | `tests/unit/company.test.js` | Unit tests for company.js - getCompanyBrand, validateAndGetCompany, fallback caching |
 | `tests/unit/solr.test.js` | Unit tests for solr.js - query, upsert, delete, HTTP error handling |
@@ -53,6 +52,7 @@
 | `company-model.md` | Company schema definition (Peviitor Core) - fields, types, validation rules |
 | `files.md` | This file - documents role of each project file |
 | `AGENTS.md` | Rules for AI agents working on this project |
+| `AI-DERIVATION-GUIDE.md` | **Comprehensive playbook for AI agents deriving a new scraper from this template.** Consolidates all lessons learned from past derivations (MEJIX, Talent Matchmakers, Artsoft, Continental Hotels). Step-by-step + every known pitfall. AI agents should read this BEFORE starting a derivation. |
 | `BRANCH.md` | Branch strategy and naming conventions |
 | `CHANGELOG.md` | Version history and notable changes |
 | `CONTRIBUTING.md` | Contribution guidelines |
@@ -63,7 +63,6 @@
 | `TOPICS.md` | Repository topics documentation |
 | `UPDATE-REPO-ABOUT.md` | Instructions for updating repo description/about |
 | `VERIFY.md` | Step-by-step verification checklist after changes |
-| `CHROMIUM-RENDERING.md` | Technical notes on Chromium headless SPA rendering (`--virtual-time-budget`) |
 
 ## Configuration Files
 
@@ -74,6 +73,7 @@
 | `.npmrc` | npm configuration |
 | `.gitignore` | Ignores node_modules/, tmp/, .env.local |
 | `.env.local` | Local environment variables (SOLR_AUTH) - NOT committed |
+| `.github/CODEOWNERS` | Code ownership rules for PR reviews |
 | `.github/workflows/job-seeker-ro-spider.yml` | Daily scraping workflow (6 AM UTC) |
 | `.github/workflows/automation-testing.yml` | Automated tests on every push/PR |
 
@@ -81,11 +81,10 @@
 
 | File | Description |
 |------|-------------|
-| `company.json` | **ANAF cache (committed).** Survives between CI runs so the scraper does not hit demoANAF on every scrape. |
-| `delete_request.json` | **Manual maintenance tool** — SOLR payload to delete ALL jobs for CIF 45871772. |
-| `docs/company.json` | Static copy of `config/company.json` regenerated on each scrape. Served by GitHub Pages. |
+| `company.json` | **ANAF cache (committed).** Survives between CI runs so the scraper does not hit demoANAF on every scrape. Refreshed when older than 7 days (configurable via `CACHE_MAX_AGE_DAYS` in company.js). |
+| `docs/company.json` | Static copy of `config/company.json` regenerated on each scrape. Served by GitHub Pages so the live page can read company identity without hardcoding it in HTML. |
+| `delete_request.json` | **Manual maintenance tool** — SOLR payload to delete ALL jobs for CIF 45871772. Use only when you need to wipe Ciklum jobs from SOLR entirely. Run with: `curl --user "${SOLR_AUTH}" "https://solr.peviitor.ro/solr/job/update?commit=true" -H "Content-Type: application/json" -d @delete_request.json` |
 | `docs/jobs.md` | Scraped jobs in markdown format - company info + all current jobs (generated by CI after each scrape) |
-| `docs/test-results/` | Test reports (generated by CI) |
 
 ## Notes
 

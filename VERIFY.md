@@ -32,13 +32,13 @@ Pentru fiecare workflow din `.github/workflows/`:
 
 ## 3. Rulează scraperul prin GitHub Actions (ultimul pas)
 
-1. Mergi la **Actions** → **WebScraper Ciklum to Peviitor** (`job-seeker-ro-spider.yml`)
+1. Mergi la **Actions** → **Oportunitati SI Cariere** (`job-seeker-ro-spider.yml`)
 2. Apasă **Run workflow** → lasă `main`
 3. Așteaptă să se termine
 4. Verifică în SOLR că job-urile companiei apar:
    ```bash
    # CIF-ul companiei
-   curl --user "${SOLR_AUTH}" "https://solr.peviitor.ro/solr/job/select?q=cif:45871772&rows=10"
+   curl --user "${SOLR_AUTH}" "https://solr.peviitor.ro/solr/job/select?q=cif:CIF&rows=10"
    ```
 5. Verifică că `docs/jobs.md` a fost generat și este accesibil:
    - https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/jobs.md

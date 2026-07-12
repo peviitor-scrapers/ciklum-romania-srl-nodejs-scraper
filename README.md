@@ -1,6 +1,6 @@
 # job_seeker_ro_spider — Ciklum Careers Romania Scraper
 
-[![WebScraper Ciklum to Peviitor](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml/badge.svg)](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml)
+[![Oportunitati SI Cariere](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml/badge.svg)](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml)
 [![Automation Tests](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/automation-testing.yml/badge.svg)](https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/automation-testing.yml)
 
 [![Version](https://img.shields.io/github/package-json/v/sebiboga/ciklum-romania-srl-nodejs-scraper?label=version&color=blue)](CHANGELOG.md)
@@ -13,7 +13,25 @@
 [![SOLR](https://img.shields.io/website?url=https%3A%2F%2Fsolr.peviitor.ro%2Fsolr%2F&label=solr.peviitor.ro)](https://solr.peviitor.ro/solr/)
 [![GitHub Pages](https://img.shields.io/github/deployments/sebiboga/ciklum-romania-srl-nodejs-scraper/github-pages?label=GitHub%20Pages)](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/)
 
-**job_seeker_ro_spider** — un scraper pentru job-urile Ciklum din România. Extrage anunțurile de pe [Ciklum Careers](https://explore-jobs.ciklum.com) și le publică în [peviitor.ro](https://peviitor.ro) prin API-ul SOLR.
+**job_seeker_ro_spider** — un scraper pentru job-urile Ciklum din România. Extrage anunțurile de pe [Ciklum Careers Romania](https://explore-jobs.ciklum.com/en/sites/ciklum-career/jobs) și le publică în [peviitor.ro](https://peviitor.ro) prin API-ul SOLR.
+
+> **📐 Template repository.** Acest repo este **referința** pentru toate scraper-ele Node.js din ecosistemul peviitor.ro. Toate scraper-ele noi pentru alte companii din România ar trebui derivate din acest pattern. Vezi [CONTRIBUTING.md](CONTRIBUTING.md) pentru pașii de derivare.
+>
+> **✅ Derivate validate:**
+> - [mejix-srl-nodejs-scraper](https://github.com/sebiboga/mejix-srl-nodejs-scraper) — MEJIX S.R.L. (HTML/cheerio, single-page)
+> - [talent-matchmakers-srl-nodejs-scraper](https://github.com/sebiboga/talent-matchmakers-srl-nodejs-scraper) — TALENT MATCHMAKERS S.R.L. (Teamtailor HTML/cheerio)
+> - [artsoft-consult-srl-nodejs-scraper](https://github.com/sebiboga/artsoft-consult-srl-nodejs-scraper) — ARTSOFT CONSULT SRL (HTML scraping/cheerio)
+> - [axon-soft-srl-nodejs-scraper](https://github.com/sebiboga/axon-soft-srl-nodejs-scraper) — AXON SOFT SRL (WordPress HTML/cheerio)
+> - [continental-hotels-srl-nodejs-scraper](https://github.com/sebiboga/continental-hotels-srl-nodejs-scraper) — CONTINENTAL HOTELS SA (POST AJAX → HTML/cheerio)
+> - [coera-bc-srl-nodejs-scraper](https://github.com/sebiboga/coera-bc-srl-nodejs-scraper) — COERA BC SRL (HTML/cheerio, single-page)
+> - [rapel-srl-nodejs-scraper](https://github.com/sebiboga/rapel-srl-nodejs-scraper) — RAPEL SRL (jobRapid.ro HTML/cheerio + ANOFM API)
+> - [ropardo-srl-nodejs-scraper](https://github.com/sebiboga/ropardo-srl-nodejs-scraper) — ROPARDO SRL (WordPress HTML/cheerio)
+> - [gaminvest-srl-nodejs-scraper](https://github.com/sebiboga/gaminvest-srl-nodejs-scraper) — GAMINVEST SRL (HTML/cheerio, single-page)
+> - [tec-software-solutions-srl-nodejs-scraper](https://github.com/sebiboga/tec-software-solutions-srl-nodejs-scraper) — TEC SOFTWARE SOLUTIONS SRL (BambooHR API)
+> - [connatix-native-exchange-romania-srl-nodejs-scraper](https://github.com/sebiboga/connatix-native-exchange-romania-srl-nodejs-scraper) — CONNATIX NATIVE EXCHANGE ROMANIA SRL (Greenhouse API/JSON fetch)
+> - [cybertech-srl-nodejs-scraper](https://github.com/sebiboga/cybertech-srl-nodejs-scraper) — CYBERTECH SRL (ANOFM API)
+> - [principal33-srl-nodejs-scraper](https://github.com/sebiboga/principal33-srl-nodejs-scraper) — PRINCIPAL33 S.R.L. (Personio JSON API)
+> - [lseg-nodejs-scraper](https://github.com/sebiboga/lseg-nodejs-scraper) — LSEG BUSINESS SERVICES RM S.R.L. (Workday JSON API)
 
 ## Overview
 
@@ -21,9 +39,10 @@ Proiectul automatizează colectarea zilnică a job-urilor Ciklum din România, m
 
 ## Features
 
-- Extrage job-uri din API-ul public Ciklum Careers (Oracle HCM REST API)
+- Extrage job-uri din API-ul public Ciklum Careers Romania
 - Validează compania via ANAF (CUI, status activ/inactiv, adresă completă)
-- **Fallback CUIFirma** — când ANAF e indisponibil, folosește cuifirma.ro
+- **Cache ANAF la 7 zile** — committed în repo, nu lovește demoANAF la fiecare scrape
+- **Fallback la cache stale** dacă ANAF e indisponibil
 - Cross-validează cu Peviitor API
 - Stochează în SOLR (job core + company core)
 - Generează `docs/jobs.md` automat — accesibil pe GitHub Pages
@@ -44,15 +63,14 @@ Proiectul automatizează colectarea zilnică a job-urilor Ciklum din România, m
 │   ├── company.json            # Single source of truth: CIF, brand, URLs, API params
 │   └── company.js              # ESM loader for company.json
 ├── src/
-│   ├── anaf.js                 # ANAF API core module (search + company details + cuifirma fallback)
-│   ├── cuifirma.js             # CUIFirma MCP fallback for ANAF
+│   ├── anaf.js                 # ANAF API core module (search + company details)
 │   ├── markdown-generator.js   # Generates docs/jobs.md from scraped data
 │   └── job-validator.js        # Shared validateByHead + validateByContent
-├── company.json                # ANAF data cache (committed, fallback when ANAF is down)
+├── company.json                # ANAF data cache (committed, 7-day TTL)
 ├── tests/
 │   ├── package.json            # Jest config for test suite
 │   ├── company.json            # Mock ANAF data used in unit tests
-│   ├── validate-ciklum-jobs.js # SOLR job URL validation script
+│   ├── validate-ciklum-jobs.js   # SOLR job URL validation script
 │   ├── unit/
 │   │   ├── index.test.js       # Tests for parseApiJobs, mapToJobModel, transformJobsForSOLR
 │   │   ├── company.test.js     # Tests for validateAndGetCompany, fallback caching
@@ -70,7 +88,6 @@ Proiectul automatizează colectarea zilnică a job-urilor Ciklum din România, m
 ├── docs/
 │   ├── index.html              # Live job board (GitHub Pages)
 │   ├── jobs.md                 # Scraped jobs in markdown (generated by CI)
-│   ├── company.json            # Static copy of company data for GitHub Pages
 │   ├── README.md
 │   └── test-results/           # Test reports (generated by CI)
 │       ├── index.html
@@ -79,6 +96,7 @@ Proiectul automatizează colectarea zilnică a job-urilor Ciklum din România, m
 │       ├── post-scrape.html
 │       └── post-scrape-consistency.html
 ├── .github/
+│   ├── CODEOWNERS
 │   └── workflows/
 │       ├── job-seeker-ro-spider.yml     # Daily scraping at 6 AM UTC
 │       └── automation-testing.yml       # Automation Tests on push/PR
@@ -137,7 +155,7 @@ npm run test:e2e
 The `job-seeker-ro-spider.yml` workflow runs daily at 6 AM UTC via GitHub Actions. It:
 1. Runs pre-scrape tests (unit + integration)
 2. Validates company data via ANAF
-3. Scrapes current job listings from Ciklum Careers (Oracle HCM API)
+3. Scrapes current job listings from Ciklum Careers
 4. Updates Solr with new/removed jobs
 5. Runs post-scrape tests (e2e + consistency)
 6. Uploads test results and job data as artifacts
@@ -152,11 +170,44 @@ The `automation-testing.yml` workflow runs on every push and pull request. It:
 3. Validates data integrity in Solr
 4. Pushes test reports to [`docs/test-results/`](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/test-results/)
 
+## 🌱 Derived Scrapers
+
+Acest template a fost folosit cu succes pentru a deriva scraper-e pentru alte companii din ecosistemul peviitor.ro:
+
+| Repo | Companie | CIF | Metodă | Status |
+|------|----------|-----|--------|--------|
+| [mejix-srl-nodejs-scraper](https://github.com/sebiboga/mejix-srl-nodejs-scraper) | MEJIX SRL | 17372688 | HTML scraping (cheerio) | ✅ Live |
+| [talent-matchmakers-srl-nodejs-scraper](https://github.com/sebiboga/talent-matchmakers-srl-nodejs-scraper) | TALENT MATCHMAKERS S.R.L. | 38460545 | Teamtailor HTML (cheerio) | ✅ Live |
+| [artsoft-consult-srl-nodejs-scraper](https://github.com/sebiboga/artsoft-consult-srl-nodejs-scraper) | ARTSOFT CONSULT SRL | 15997630 | HTML scraping (cheerio) | ✅ Live |
+| [rapel-srl-nodejs-scraper](https://github.com/sebiboga/rapel-srl-nodejs-scraper) | RAPEL SRL | 5665609 | jobRapid.ro HTML (cheerio) | ✅ Live |
+| [axon-soft-srl-nodejs-scraper](https://github.com/sebiboga/axon-soft-srl-nodejs-scraper) | AXON SOFT SRL | 13049596 | WordPress HTML (cheerio) | ✅ Live |
+| [continental-hotels-srl-nodejs-scraper](https://github.com/sebiboga/continental-hotels-srl-nodejs-scraper) | CONTINENTAL HOTELS SA | 1559737 | POST AJAX → HTML (cheerio) | ✅ Live |
+| [coera-bc-srl-nodejs-scraper](https://github.com/sebiboga/coera-bc-srl-nodejs-scraper) | COERA BC SRL | 32519996 | HTML scraping (cheerio) | ✅ Live |
+| [sennder-bucharest-srl-nodejs-scraper](https://github.com/sebiboga/sennder-bucharest-srl-nodejs-scraper) | SENNDER BUCHAREST S.R.L. | 45780151 | Gem ATS API (JSON fetch) | ✅ Live |
+| [ropardo-srl-nodejs-scraper](https://github.com/sebiboga/ropardo-srl-nodejs-scraper) | ROPARDO SRL | 5415866 | WordPress HTML (cheerio) | ✅ Live |
+| [gaminvest-srl-nodejs-scraper](https://github.com/sebiboga/gaminvest-srl-nodejs-scraper) | GAMINVEST SRL | 21913994 | HTML scraping (cheerio) | ✅ Live |
+| [tec-software-solutions-srl-nodejs-scraper](https://github.com/sebiboga/tec-software-solutions-srl-nodejs-scraper) | TEC SOFTWARE SOLUTIONS SRL | 32971419 | BambooHR API (JSON fetch) | ✅ Live |
+| [stefanini-romania-srl-nodejs-scraper](https://github.com/sebiboga/stefanini-romania-srl-nodejs-scraper) | STEFANINI ROMANIA SRL | 16139707 | SmartSearchOnline HTML (cheerio) | ✅ Live |
+| [metro-cash-carry-romania-srl-nodejs-scraper](https://github.com/sebiboga/metro-cash-carry-romania-srl-nodejs-scraper) | METRO CASH & CARRY ROMANIA SRL | 8119423 | HTML/cheerio | ✅ Live |
+| [qualitest-dc-ro-srl-nodejs-scraper](https://github.com/sebiboga/qualitest-dc-ro-srl-nodejs-scraper) | QUALITEST DC RO S.R.L. | 39814543 | Workable JSON API | ✅ Live |
+| [west-co-impex-srl-nodejs-scraper](https://github.com/sebiboga/west-co-impex-srl-nodejs-scraper) | WEST CO IMPEX SRL | 4565806 | WordPress HTML (cheerio) | ✅ Live |
+| [lseg-nodejs-scraper](https://github.com/sebiboga/lseg-nodejs-scraper) | LSEG BUSINESS SERVICES RM S.R.L. | 39176747 | Workday JSON API | ✅ Live |
+
+**Învățăminte din derivări:**
+- Doar un singur fișier de editat pentru identitate: `config/company.json` ✅
+- Logica de scraping în `index.js` poate fi complet diferită (API vs HTML/Teamtailor/jobRapid.ro/ANOFM) fără să afecteze restul pipeline-ului
+- Toate cele 4 niveluri de teste (unit, integration, e2e, consistency) și workflow-urile CI au funcționat pe toate derivatele fără ajustări structurale
+- **Pitfall #1 — ANAF brand search:** Căutarea ANAF după brand poate returna firme omonime diferite înaintea celei căutate. Testele trebuie să interogheze direct pe CIF, nu după nume.
+- **Pitfall #2 — Version conflict la re-upsert:** Joburile citite din SOLR păstrează `_version_`; după delete-by-CIF, re-insertul eșuează cu 409. Se șterge `_version_` din obiecte înainte de upsert.
+- **Pitfall #12 — ANOFM job scraping by CIF:** API-ul public ANOFM (`/api/entity/vw_public_job_posting`) oferă job-uri gratis filtrate pe CIF. Adăugați `searchANOFM(cif)` în scraper pentru a nu pierde job-uri de pe această platformă. Location se returnează ca array (`[loc]`).
+
+Pentru a deriva un scraper nou, urmează [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Acknowledgments
 
-This project was developed with assistance from:
-- **[OpenCode](https://opencode.ai)** - AI-powered CLI tool for software engineering
-- **Big Pickle LLM** - Large language model powering OpenCode
+This project was developed with assistance from **[Claude Code](https://claude.ai/code)** by Anthropic.
+
+Special thanks to the open source community and the peviitor.ro team for their support.
 
 ## License
 
@@ -173,9 +224,10 @@ This project is managed by [ASOCIATIA OPORTUNITATI SI CARIERE](https://oportunit
 Acest scraper respectă regulile din [robots.txt](https://explore-jobs.ciklum.com/robots.txt) al Ciklum Careers. Pentru analiza completă, vezi [ROBOTS.md](ROBOTS.md).
 
 **Puncte cheie:**
-- Ciklum Careers nu blochează accesul în robots.txt (`Allow: /`)
-- Scraperul folosește rate limiting (1s delay între pagini) și un singur User-Agent identificabil (`job_seeker_ro_spider`)
-- Comportament: 1 cerere/25 job-uri, delay 1s între pagini, fără concurență
+- API-ul `/api/*` este `Disallow` în robots.txt — scraper-ul îl folosește, dar cu rate limiting și un singur User-Agent identificabil (`job_seeker_ro_spider`)
+- Paginile individuale de job (`/*/vacancy/*`) sunt `Disallow` — scraper-ul NU le parsează, doar le verifică accesibilitatea via HEAD request
+- Endpoint-urile permise (`/`, `/en/jobs`) nu sunt scraper-uite
+- Comportament: 1 cerere/10 job-uri, delay 1s între pagini, fără concurență
 
 ## Disclaimer
 
