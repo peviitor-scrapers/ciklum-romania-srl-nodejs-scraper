@@ -25,7 +25,7 @@ function parseJobs(html) {
   const titles = [...html.matchAll(/job-tile__title[^"]*"[^>]*>([^<]+)/g)].filter(m => m[1].trim());
   const locs = [...html.matchAll(/primaryLocation">([^<]+)/g)];
   const wps = [...html.matchAll(/workplaceTypeName">[^<]*\(([^)]+)\)/g)];
-  const dates = [...html.matchAll(/job-list-item__job-info-value[^>]*>([^<]+)/g)];
+  const dates = [...html.matchAll(/job-list-item__job-info-value[^>]*>([^<]+)/g)].filter(m => m[1].trim());
 
   for (let i = 0; i < links.length; i++) {
     const id = links[i][2];
@@ -55,18 +55,21 @@ async function uploadJobsToSolr(jobs) {
     return;
   }
 
-  const solrJobs = jobs.map(j => ({
-    cif: CIF,
-    company: COMPANY,
-    title: j.title,
-    url: j.url,
-    location: [j.location],
-    workmode: j.workplaceType,
-    postingDate: j.postingDate,
-    date: new Date().toISOString(),
-    source: 'ciklum.com',
-    status: 'scraped',
-  }));
+  const solrJobs = jobs.map(j => {
+    const doc = {
+      cif: CIF,
+      company: COMPANY,
+      title: j.title,
+      url: j.url,
+      location: [j.location],
+      workmode: j.workplaceType,
+      date: new Date().toISOString(),
+      source: 'ciklum.com',
+      status: 'scraped',
+    };
+    if (j.postingDate) doc.postingDate = j.postingDate;
+    return doc;
+  });
 
   const params = new URLSearchParams({ commit: 'true' });
 
