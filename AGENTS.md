@@ -8,12 +8,12 @@ Ciklum scraper for peviitor.ro (Node.js, ESM, Jest)
 
 **When in doubt, diff against EPAM.** If this repo has a structural difference vs EPAM that isn't a company-specific swap, it's a bug.
 
-## 📐 This Repo Is a Template
+## 📐 EPAM Is the Template
 This repo is the **reference implementation** for all Node.js scrapers in the peviitor.ro ecosystem. Other scrapers are derived from it.
 
 **🤖 If you've been asked to CREATE or RECREATE a derived scraper, read [AI-DERIVATION-GUIDE.md](AI-DERIVATION-GUIDE.md) first.** That file is the consolidated playbook covering every step + all known pitfalls from past derivations.
 
-When making changes to this template:
+When making changes to the EPAM template:
 - **All company-specific identity lives in `config/company.json`** (CIF, brand, legalName, URLs, API params). Read from `config/company.js` in Node code, or via `jq` in workflows. Never hardcode in source files.
 - **Only the scraping logic in `index.js`** (`parseApiJobs`) is Ciklum-specific (Chromium rendering). The output shape (`mapToJobModel`, `transformJobsForSOLR`) must stay uniform across derived scrapers.
 - **If you add a new file, update [CONTRIBUTING.md](CONTRIBUTING.md)** — the derivation checklist must stay accurate.

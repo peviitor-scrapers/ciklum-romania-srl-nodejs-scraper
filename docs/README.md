@@ -69,7 +69,7 @@ Pentru analiza completă, vezi [ROBOTS.md](../ROBOTS.md).
 
 ## 🌱 Derived Scrapers
 
-Acest template a fost folosit pentru a deriva scraper-e pentru alte companii:
+Template-ul EPAM a fost folosit pentru a deriva scraper-e pentru alte companii:
 
 | Repo | Companie | CIF | Metodă | Status |
 |------|----------|-----|--------|--------|

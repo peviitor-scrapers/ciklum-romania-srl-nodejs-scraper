@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing!
 
-## 📐 This Repo Is a Template
+## 📐 EPAM Is the Template
 
 This is the **reference implementation** for Node.js job scrapers in the peviitor.ro ecosystem. (The canonical template is [EPAM Systems International SRL scraper](https://github.com/sebiboga/epam-systems-international-srl-nodejs-scraper).) New scrapers for other Romanian companies should be derived from this pattern — same structure, same workflows, same testing layers.
 

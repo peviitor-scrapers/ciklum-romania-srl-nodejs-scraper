@@ -1,6 +1,6 @@
 # TOPICS.md — Repository GitHub Topics
 
-Toate scraper-urile derivate din acest template **MUST** avea **EXACT 2 topic-uri**:
+Toate scraper-urile derivate din template-ul EPAM **MUST** avea **EXACT 2 topic-uri**:
 
 | Topic | Descriere |
 |-------|-----------|
