@@ -10,8 +10,8 @@ const FILTER_URL = 'https://explore-jobs.ciklum.com/en/sites/ciklum-career/jobs?
 
 function renderPage(url) {
   const html = execSync(
-    `chromium --headless=new --disable-gpu --no-sandbox --dump-dom '${url}'`,
-    { timeout: 30000, encoding: 'utf-8' }
+    `chromium --headless=new --disable-gpu --no-sandbox --dump-dom --virtual-time-budget=10000 '${url}'`,
+    { timeout: 60000, encoding: 'utf-8' }
   );
   const marker = '</script>';
   const bodyStart = html.indexOf(marker);
@@ -20,24 +20,27 @@ function renderPage(url) {
 
 function parseJobs(html) {
   const jobs = [];
-  const jobPattern = /<a class="job-list-item__link[^>]*href="[^"]*\/job\/([^/?]+)[^"]*"[^>]*>.*?job-tile__title[^>]*>([^<]+).*?primaryLocation[^>]*>([^<]+).*?(?:workplaceTypeName[^>]*>[^<]*\(([^)]+)\))?/gs;
 
-  let match;
-  while ((match = jobPattern.exec(html)) !== null) {
-    const id = match[1];
-    const title = match[2].replace(/&amp;/g, '&').trim();
-    const location = match[3].trim();
-    const workplace = match[4] ? match[4].trim() : '';
+  const links = [...html.matchAll(/href="([^"]*\/job\/(\d+)[^"]*)"/g)];
+  const titles = [...html.matchAll(/job-tile__title[^"]*"[^>]*>([^<]+)/g)].filter(m => m[1].trim());
+  const locs = [...html.matchAll(/primaryLocation">([^<]+)/g)];
+  const wps = [...html.matchAll(/workplaceTypeName">[^<]*\(([^)]+)\)/g)];
+  const dates = [...html.matchAll(/job-list-item__job-info-value[^>]*>([^<]+)/g)];
 
-    const dateSection = html.slice(match.index, match.index + 2000);
-    const dateMatch = dateSection.match(/job-list-item__job-info-value[^>]*>([^<]+)/);
-    const date = dateMatch ? dateMatch[1].trim() : '';
+  for (let i = 0; i < links.length; i++) {
+    const id = links[i][2];
+    const title = (titles[i] ? titles[i][1] : '').replace(/&amp;/g, '&').trim();
+    const location = (locs[i] ? locs[i][1] : 'România').trim();
+    const workplace = wps[i] ? wps[i][1].trim().toLowerCase() : 'remote';
+    const date = dates[i] ? dates[i][1].trim() : '';
+
+    if (!title) continue;
 
     jobs.push({
       title,
       url: `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/${id}`,
       location: location === 'Poland' ? 'Romania' : location,
-      workplaceType: workplace ? workplace.toLowerCase() : 'remote',
+      workplaceType: workplace,
       postingDate: date,
     });
   }
