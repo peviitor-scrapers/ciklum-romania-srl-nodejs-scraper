@@ -4,13 +4,20 @@
  * - validateByHead(url): fast HEAD check, only HTTP status matters.
  * - validateByContent(url, opts): GET the page and scan body for expiration
  *   keywords (catches soft-404s where status is 200 but the job is gone).
+ * - validateByChromium(url, opts): render with Chromium headless and check DOM
+ *   for expired indicators (for SPAs where raw HTML is always 200).
  *
  * Used by:
  *   - tests/validate-epam-jobs.js (CI nightly cleanup) — uses validateByHead
+ *   - tests/validate-ciklum-jobs.js (CI nightly cleanup) — uses validateByChromium
  *   - validate-jobs.js (manual deep checks)            — uses validateByContent
  */
 
 import fetch from "node-fetch";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
 
 export const DEFAULT_EXPIRED_KEYWORDS = [
   "sorry, this position is no longer available",
@@ -22,8 +29,16 @@ export const DEFAULT_EXPIRED_KEYWORDS = [
   "job expired"
 ];
 
+const ORACLE_HCM_EXPIRED_INDICATORS = [
+  "error-404__header",
+  "error-404__description",
+  "page not found",
+  "the page was moved or no longer exists"
+];
+
 const DEFAULT_USER_AGENT = "job_seeker_ro_spider";
 const DEFAULT_TIMEOUT_MS = 15000;
+const CHROMIUM_VIRTUAL_TIME_MS = 10000;
 
 /**
  * HEAD-only validator. Returns the URL active if status is 2xx/3xx, expired
@@ -81,6 +96,40 @@ export async function validateByContent(url, {
       status: expired ? "expired" : "active",
       httpStatus: res.status,
       title: titleMatch ? titleMatch[1].trim() : null,
+      error: null
+    };
+  } catch (err) {
+    return { url, status: "error", httpStatus: 0, title: null, error: err.message };
+  }
+}
+
+/**
+ * Chromium headless validator. Renders the page with Chromium and checks the
+ * DOM for expired indicators. Required for SPAs (Oracle HCM, etc.) where the
+ * server always returns 200 and the "expired" message is rendered client-side.
+ */
+export async function validateByChromium(url, {
+  virtualTimeBudget = CHROMIUM_VIRTUAL_TIME_MS,
+  expiredIndicators = ORACLE_HCM_EXPIRED_INDICATORS
+} = {}) {
+  try {
+    const { stdout } = await execFileAsync("chromium", [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-sandbox",
+      "--dump-dom",
+      `--virtual-time-budget=${virtualTimeBudget}`,
+      url
+    ], { timeout: 30000, maxBuffer: 10 * 1024 * 1024 });
+
+    const dom = stdout.toLowerCase();
+    const expired = expiredIndicators.some(ind => dom.includes(ind));
+
+    return {
+      url,
+      status: expired ? "expired" : "active",
+      httpStatus: 200,
+      title: null,
       error: null
     };
   } catch (err) {
