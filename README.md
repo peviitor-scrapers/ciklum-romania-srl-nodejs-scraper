@@ -15,7 +15,7 @@
 
 **job_seeker_ro_spider** — un scraper pentru job-urile Ciklum din România. Extrage anunțurile de pe [Ciklum Careers Romania](https://explore-jobs.ciklum.com/en/sites/ciklum-career/jobs) și le publică în [peviitor.ro](https://peviitor.ro) prin API-ul SOLR.
 
-> **📐 Template repository.** Acest repo este **referința** pentru toate scraper-ele Node.js din ecosistemul peviitor.ro. Toate scraper-ele noi pentru alte companii din România ar trebui derivate din acest pattern. Vezi [CONTRIBUTING.md](CONTRIBUTING.md) pentru pașii de derivare.
+> **📐 Template repository.** [EPAM Systems International SRL scraper](https://github.com/sebiboga/epam-systems-international-srl-nodejs-scraper) este **referința** pentru toate scraper-ele Node.js din ecosistemul peviitor.ro. Acest repo (Ciklum) este derivat din acel template. Toate scraper-ele noi pentru alte companii din România ar trebui derivate din pattern-ul EPAM. Vezi [CONTRIBUTING.md](CONTRIBUTING.md) pentru pașii de derivare.
 >
 > **✅ Derivate validate:**
 > - [mejix-srl-nodejs-scraper](https://github.com/sebiboga/mejix-srl-nodejs-scraper) — MEJIX S.R.L. (HTML/cheerio, single-page)
@@ -172,7 +172,7 @@ The `automation-testing.yml` workflow runs on every push and pull request. It:
 
 ## 🌱 Derived Scrapers
 
-Acest template a fost folosit cu succes pentru a deriva scraper-e pentru alte companii din ecosistemul peviitor.ro:
+Acest template (EPAM) a fost folosit cu succes pentru a deriva scraper-e pentru alte companii din ecosistemul peviitor.ro:
 
 | Repo | Companie | CIF | Metodă | Status |
 |------|----------|-----|--------|--------|

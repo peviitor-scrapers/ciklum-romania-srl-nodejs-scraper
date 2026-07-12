@@ -4,7 +4,7 @@ Thank you for your interest in contributing!
 
 ## 📐 This Repo Is a Template
 
-This is the **reference implementation** for Node.js job scrapers in the peviitor.ro ecosystem. New scrapers for other Romanian companies should be derived from this pattern — same structure, same workflows, same testing layers.
+This is the **reference implementation** for Node.js job scrapers in the peviitor.ro ecosystem. (The canonical template is [EPAM Systems International SRL scraper](https://github.com/sebiboga/epam-systems-international-srl-nodejs-scraper).) New scrapers for other Romanian companies should be derived from this pattern — same structure, same workflows, same testing layers.
 
 > **✅ Validated in production.** These derived scrapers follow this exact checklist:
 > - [mejix-srl-nodejs-scraper](https://github.com/sebiboga/mejix-srl-nodejs-scraper) — MEJIX S.R.L. (HTML/cheerio, single-page)
