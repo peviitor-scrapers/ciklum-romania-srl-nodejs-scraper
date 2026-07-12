@@ -85,12 +85,12 @@ npm run test:consistency
 - `docs/company.json` is regenerated on every scrape so GitHub Pages can read company identity
 
 ### 9. Scraper Architecture
-- Uses Oracle HCM REST API (`recruitingCEJobRequisitions`) instead of HTML scraping
-- Ciklum careers page is an SPA (Oracle Cloud HCM), jobs load via JavaScript
-- API: `GET /hcmRestApi/resources/latest/recruitingCEJobRequisitions`
-- Required headers: `ora-irc-cx-userid` (UUID), `ora-irc-language` (en), `Content-Type` (application/vnd.oracle.adf.resourceitem+json;charset=utf-8), `Origin`, `Referer`
-- Max 25 results per request, filters Romanian jobs client-side via `PrimaryLocationCountry === 'RO'`
+- Uses Chromium headless with `--dump-dom --virtual-time-budget=10000` to render the SPA (see [CHROMIUM-RENDERING.md](CHROMIUM-RENDERING.md))
+- Ciklum careers page is an Oracle HCM SPA, jobs load via JavaScript — the Oracle HCM REST API requires session cookies not available externally
+- Chromium renders the full page, waits 10s for JS to fetch jobs, then we parse the rendered DOM
+- DOM parsing: extract `href`, `job-tile__title`, `primaryLocation`, `workplaceTypeName` via regex
 - Job URL: `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/{Id}`
+- Romania filter: `selectedLocationsFacet=300000000468495` in the URL
 
 ### 10. Auto-Heal Issues
 When the `Automation Tests` workflow fails, a **GitHub Issue** is auto-created with label `auto-heal`. The issue contains:

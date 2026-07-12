@@ -63,6 +63,7 @@
 | `TOPICS.md` | Repository topics documentation |
 | `UPDATE-REPO-ABOUT.md` | Instructions for updating repo description/about |
 | `VERIFY.md` | Step-by-step verification checklist after changes |
+| `CHROMIUM-RENDERING.md` | Technical notes on Chromium headless SPA rendering (`--virtual-time-budget`) |
 
 ## Configuration Files
 

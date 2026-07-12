@@ -38,6 +38,7 @@ When working on this scraper:
 ## Technologies
 
 - **Node.js & JavaScript** - For scraping and data extraction
+- **Chromium headless** - Renders the Oracle HCM SPA (`--virtual-time-budget=10000`; see [CHROMIUM-RENDERING.md](CHROMIUM-RENDERING.md))
 - **Apache SOLR** - For data storage and indexing
 - **OpenCode + Big Pickle** - For development
 
@@ -106,7 +107,7 @@ company.js (validate company)
     └── SOLR ──► check existing jobs count
     │
     ▼ (if active)
-scrape Ciklum API (Oracle HCM, jobs for Romania)
+scrape Ciklum (Chromium renders SPA → parse DOM; see CHROMIUM-RENDERING.md)
     │
     ▼
 transformJobsForSOLR()
