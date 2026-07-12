@@ -62,18 +62,29 @@ npm run test:consistency
 
 ### 6. Verification
 - După orice modificare, urmează [VERIFY.md](VERIFY.md) pas cu pas
-- Ultimul pas = rulează scraperul prin GitHub Actions și verifică job-urile în SOLR
+- Ultimul pas = rulează scraperul prin GitHub Actions, verifică job-urile în SOLR, și verifică că `docs/jobs.md` a fost generat și este accesibil pe GitHub Pages
 - Toate workflow-urile din `.github/workflows/` trebuie să treacă înainte de merge
 
 ### 7. Module Structure
-- `company.json` — cached ANAF data (committed to repo, fallback when ANAF is down)
+- `config/company.json` + `config/company.js` — single source of truth for company identity
 - `src/anaf.js` — core ANAF library (imported by company.js); retry logic: 3 retries, 2s exponential backoff; includes cuifirma.ro fallback
 - `src/cuifirma.js` — CUIFirma MCP fallback for ANAF demoanaf.ro
+- `src/markdown-generator.js` — generates `docs/jobs.md` after each scrape; called from index.js
+- `src/job-validator.js` — shared `validateByHead` + `validateByContent` used by both validator CLIs
+- `demoanaf.js` — CLI wrapper around src/anaf.js
 - `company.js` — company validation (ANAF + Peviitor + SOLR); root `company.json` is ANAF cache committed to repo
 - `solr.js` — SOLR operations
-- `index.js` — main scraper orchestrator (Oracle HCM REST API)
+- `validate-jobs.js` — manual deep validator (content-aware); thin wrapper over src/job-validator.js
+- `tests/validate-ciklum-jobs.js` — CI fast validator (HEAD only); thin wrapper over src/job-validator.js + solr.js
+- `index.js` — main scraper orchestrator
 
-### 8. Scraper Architecture
+### 8. Caching Behavior
+- `tmp/company.json` — per-run scratch cache (gitignored)
+- `company.json` (root) — committed cache, refreshed when stale
+- If ANAF is unreachable AND cache is stale, the code falls back to the stale cache rather than failing the scrape
+- `docs/company.json` is regenerated on every scrape so GitHub Pages can read company identity
+
+### 9. Scraper Architecture
 - Uses Oracle HCM REST API (`recruitingCEJobRequisitions`) instead of HTML scraping
 - Ciklum careers page is an SPA (Oracle Cloud HCM), jobs load via JavaScript
 - API: `GET /hcmRestApi/resources/latest/recruitingCEJobRequisitions`
@@ -81,7 +92,7 @@ npm run test:consistency
 - Max 25 results per request, filters Romanian jobs client-side via `PrimaryLocationCountry === 'RO'`
 - Job URL: `https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/{Id}`
 
-### 9. Auto-Heal Issues
+### 10. Auto-Heal Issues
 When the `Automation Tests` workflow fails, a **GitHub Issue** is auto-created with label `auto-heal`. The issue contains:
 - Run URL, branch, commit, and trigger event
 - Instructions for opencode to investigate, fix, commit, push, and close

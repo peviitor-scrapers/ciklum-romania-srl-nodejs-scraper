@@ -82,14 +82,15 @@ When running `node index.js`, the following steps happen automatically:
 3. **Scrape jobs** - Extract jobs from Ciklum careers API (Romania only)
 4. **Transform for SOLR** - Fix locations (only Romanian cities), normalize fields
 5. **Upsert to SOLR** - Add/update jobs (SOLR handles duplicates by URL)
-6. **Show Summary** - Log job counts
+6. **Generate docs/jobs.md** - Markdown file with company info + all current jobs
+7. **Show Summary** - Log job counts
 
 **Important**: We do NOT delete existing jobs! This preserves jobs from other sources (ANOFM, etc).
 
 ## Workflow Flowchart
 
 ```
-company.json (cached ANAF data: CIF, brand, URLs)
+config/company.json (single source of truth: CIF, brand, URLs)
     │
     ▼
 index.js
@@ -116,19 +117,28 @@ transformJobsForSOLR()
     │
     ▼
 upsertJobs() - SOLR handles duplicate by URL
+    │
+    ▼
+generateJobsMarkdown() → docs/jobs.md
+    └── committed to repo by CI → available on GitHub Pages
 ```
 
 ## File Responsibilities
 
 | File | Role |
 |------|------|
-| `company.json` | **ANAF cache (committed)** — survives between CI runs, fallback when ANAF is down |
-| `index.js` | Main entry point - full workflow: validate company → scrape → transform → upsert |
+| `config/company.json` | **Single source of truth** for company identity (CIF, brand, URLs, API params) |
+| `config/company.js` | ESM wrapper that loads `config/company.json` for Node code |
+| `index.js` | Main entry point - full workflow: validate company → scrape → transform → upsert → generate docs/jobs.md |
 | `company.js` | Validates company via ANAF + Peviitor; caches in root `company.json` and `tmp/company.json` |
 | `solr.js` | SOLR operations module - query, delete, upsert jobs + standalone commands |
+| `validate-jobs.js` | Manual deep validator (content-aware); thin CLI wrapper over `src/job-validator.js` |
 | `src/anaf.js` | ANAF API core module - searchCompany(brand) and getCompanyFromANAF(cif) with 3-retry/2s-backoff + cuifirma fallback |
 | `src/cuifirma.js` | CUIFirma MCP fallback - queries cuifirma.ro when ANAF is unavailable |
+| `src/markdown-generator.js` | Generates `docs/jobs.md` with company info and all scraped jobs |
+| `src/job-validator.js` | Shared validation primitives: `validateByHead`, `validateByContent`, `DEFAULT_EXPIRED_KEYWORDS` |
 | `demoanaf.js` | CLI entry point for ANAF module (thin wrapper around src/anaf.js) |
+| `tests/validate-ciklum-jobs.js` | CI fast validator (HEAD only); thin CLI over `src/job-validator.js` + `solr.js` |
 
 ## API Endpoints
 
@@ -157,6 +167,10 @@ The scraper is intentionally slow to be a good citizen:
 | Variable | Description |
 |----------|-------------|
 | `SOLR_AUTH` | SOLR credentials in format `user:password` |
+| `GITHUB_REPOSITORY` | Used by consistency tests — format: `owner/repo` |
+| `GITHUB_TOKEN` | GitHub API token for consistency tests |
+
+`dotenv` loads `.env.local` automatically at startup — set variables there for local runs. Never commit `.env.local`.
 
 ## Standalone Commands
 
@@ -175,6 +189,15 @@ node demoanaf.js <CIF>
 
 # Search companies in ANAF by brand
 node demoanaf.js search <brand>
+
+# Validate job URLs from SOLR by CIF (check active/expired)
+node validate-jobs.js <CIF>
+
+# Validate a single job URL
+node validate-jobs.js url <url>
+
+# Delete expired jobs from SOLR by CIF
+node validate-jobs.js <CIF> --delete
 ```
 
 ## Testing

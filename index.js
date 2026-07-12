@@ -1,9 +1,11 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import { generateJobsMarkdown } from './src/markdown-generator.js';
+import companyConfig from './config/company.js';
 
-const COMPANY = 'CIKLUM ROMANIA SRL';
-const CIF = '45871772';
+const COMPANY = companyConfig.legalName;
+const CIF = companyConfig.cif;
 const FILTER_URL = 'https://explore-jobs.ciklum.com/en/sites/ciklum-career/jobs?lastSelectedFacet=LOCATIONS&selectedLocationsFacet=300000000468495';
 
 function renderPage(url) {
@@ -111,6 +113,22 @@ async function main() {
   console.log(`Saved ${uniqueJobs.length} jobs to tmp/jobs.json`);
 
   await uploadJobsToSolr(uniqueJobs);
+
+  // Generate docs/jobs.md
+  const companyData = {
+    id: String(CIF),
+    company: COMPANY,
+    brand: companyConfig.brand,
+    status: 'activ',
+    location: [companyConfig.defaultLocation],
+    website: [companyConfig.website],
+    career: [companyConfig.careerUrl],
+    lastScraped: new Date().toISOString().split('T')[0],
+  };
+  const md = generateJobsMarkdown(companyData, uniqueJobs);
+  fs.mkdirSync('docs', { recursive: true });
+  fs.writeFileSync('docs/jobs.md', md, 'utf-8');
+  console.log('Generated docs/jobs.md');
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
