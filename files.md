@@ -14,7 +14,8 @@
 
 | File | Description |
 |------|-------------|
-| `src/anaf.js` | ANAF API core module - exports getCompanyFromANAF(cif), getCompanyFromANAFWithFallback(cif, cached), searchCompany(brandName) |
+| `src/anaf.js` | ANAF API core module - exports getCompanyFromANAF(cif), getCompanyFromANAFWithFallback(cif, cached), searchCompany(brandName). Tries ANAF once, falls back to cuifirma.ro if it fails. |
+| `src/cuifirma.js` | CUIFirma MCP fallback for ANAF (demoanaf.ro returns 500 frequently). Exports getCompanyFromCuifirma(cif). |
 | `src/markdown-generator.js` | Generates docs/jobs.md - exports generateJobsMarkdown(companyData, jobs) |
 | `src/job-validator.js` | Shared validation primitives - exports validateByHead(url), validateByContent(url, opts), DEFAULT_EXPIRED_KEYWORDS. Used by both `validate-jobs.js` and `tests/validate-ciklum-jobs.js`. |
 

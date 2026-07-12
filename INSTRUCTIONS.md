@@ -79,7 +79,7 @@ When running `node index.js`, the following steps happen automatically:
 
 1. **Check existing jobs count** - Query SOLR by CIF (read-only)
 2. **Validate company via ANAF** - Check company exists and is active
-3. **Scrape jobs** - Extract jobs from Ciklum careers API (Romania only)
+3. **Scrape jobs** - Extract jobs from Ciklum Careers via Chromium headless (Romania only)
 4. **Transform for SOLR** - Fix locations (only Romanian cities), normalize fields
 5. **Upsert to SOLR** - Add/update jobs (SOLR handles duplicates by URL)
 6. **Show Summary** - Log job counts
@@ -106,7 +106,7 @@ company.js (validate company)
     └── SOLR ──► check existing jobs count
     │
     ▼ (if active)
-scrape Ciklum API (jobs for Romania)
+scrape Ciklum Careers via Chromium headless (jobs for Romania)
     │
     ▼
 transformJobsForSOLR()
@@ -133,7 +133,7 @@ generateJobsMarkdown() → docs/jobs.md
 | `company.js` | Validates company via ANAF + Peviitor; caches in root `company.json` (7-day TTL) and `tmp/company.json` |
 | `solr.js` | SOLR operations module - query, delete, upsert jobs + standalone commands |
 | `validate-jobs.js` | Manual deep validator (content-aware); thin CLI wrapper over `src/job-validator.js` |
-| `src/anaf.js` | ANAF API core module - searchCompany(brand) and getCompanyFromANAF(cif) with 3-retry/2s-backoff |
+| `src/anaf.js` | ANAF API core module - exports getCompanyFromANAF(cif). Tries ANAF once, falls back to cuifirma.ro if it fails. |
 | `src/markdown-generator.js` | Generates `docs/jobs.md` with company info and all scraped jobs |
 | `src/job-validator.js` | Shared validation primitives: `validateByHead`, `validateByContent`, `DEFAULT_EXPIRED_KEYWORDS` |
 | `demoanaf.js` | CLI entry point for ANAF module (thin wrapper around src/anaf.js) |
@@ -158,19 +158,7 @@ generateJobsMarkdown() → docs/jobs.md
 
 ## Rate Limiting & Politeness
 
-The scraper is intentionally slow to be a good citizen:
-
-| Setting | Value | Where |
-|---------|-------|-------|
-| Delay between pages | 1000 ms | `index.js` — `sleep(1000)` in `scrapeAllListings()` |
-| Page size | 10 jobs | `index.js` — `PAGE_SIZE` constant |
-| Max pages | 10 | `index.js` — `MAX_PAGES` in `scrapeAllListings()` |
-| Request timeout | 10000 ms | `index.js` — `TIMEOUT` constant |
-| ANAF retries | 3 attempts, 2s exponential backoff | `src/anaf.js` |
-| Concurrency | 1 (sequential) | No `Promise.all` for paginated fetches |
-| User-Agent | `job_seeker_ro_spider` | Identifies the scraper in server logs |
-
-Derived scrapers should keep these defaults unless the target site explicitly permits otherwise.
+The scraper uses Chromium headless to render the SPA page and extract job data. A single User-Agent (`job_seeker_ro_spider`) identifies the scraper.
 
 ## Environment Variables
 

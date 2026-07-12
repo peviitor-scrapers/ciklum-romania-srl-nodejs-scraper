@@ -39,7 +39,7 @@ Proiectul automatizează colectarea zilnică a job-urilor Ciklum din România, m
 
 ## Features
 
-- Extrage job-uri din API-ul public Ciklum Careers Romania
+- Extrage job-uri de pe Ciklum Careers prin Chromium headless (rendering SPA)
 - Validează compania via ANAF (CUI, status activ/inactiv, adresă completă)
 - **Cache ANAF la 7 zile** — committed în repo, nu lovește demoANAF la fiecare scrape
 - **Fallback la cache stale** dacă ANAF e indisponibil
@@ -224,10 +224,9 @@ This project is managed by [ASOCIATIA OPORTUNITATI SI CARIERE](https://oportunit
 Acest scraper respectă regulile din [robots.txt](https://explore-jobs.ciklum.com/robots.txt) al Ciklum Careers. Pentru analiza completă, vezi [ROBOTS.md](ROBOTS.md).
 
 **Puncte cheie:**
-- API-ul `/api/*` este `Disallow` în robots.txt — scraper-ul îl folosește, dar cu rate limiting și un singur User-Agent identificabil (`job_seeker_ro_spider`)
-- Paginile individuale de job (`/*/vacancy/*`) sunt `Disallow` — scraper-ul NU le parsează, doar le verifică accesibilitatea via HEAD request
-- Endpoint-urile permise (`/`, `/en/jobs`) nu sunt scraper-uite
-- Comportament: 1 cerere/10 job-uri, delay 1s între pagini, fără concurență
+- Scraperul folosește Chromium headless pentru a renderiza pagina SPA — NU folosește API-ul `/api/*` disallowed de robots.txt
+- Paginile individuale de job (`/*/vacancy/*`) sunt și ele disallowed — scraperul NU le parsează, doar le verifică accesibilitatea via HEAD request în E2E tests
+- Comportament: o singură cerere Chromium per rulare, User-Agent identificabil (`job_seeker_ro_spider`)
 
 ## Disclaimer
 

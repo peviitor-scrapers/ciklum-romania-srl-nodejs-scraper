@@ -40,7 +40,7 @@ Disallow: /ai-interviewer/*
 |---|---|---|
 | `/` (landing) | ✅ Da | Paginile principale per-locale |
 | `/en/jobs`, `/fr/jobs`, etc. | ✅ Da | Listări de job-uri (front-end) |
-| `/api/*` | ❌ **Disallowed** | API-ul JSON de la care scraper-ul nostru extrage datele |
+| `/api/*` | ❌ **Disallowed** | API-ul JSON — scraperul NU îl folosește (folosește Chromium headless) |
 | `/*/vacancy/*` | ❌ **Disallowed** | Paginile individuale de job |
 | `/en/application` | ❌ Disallowed | Pagina de aplicare |
 | `/blog/*` | ❌ Disallowed | Blogul |
@@ -50,9 +50,9 @@ Disallow: /ai-interviewer/*
 
 robots.txt NU este legal binding, dar reprezintă intenția proprietarului site-ului.
 
-- API-ul `/api/jobs/v2/search/...` e **disallowed** de robots.txt. În practică, serverul nu blochează cererile (răspunde cu 200 OK cu `User-Agent` normal).
+- API-ul `/api/jobs/v2/search/...` e **disallowed** de robots.txt. Scraperul NU îl folosește — folosește Chromium headless pentru a renderiza pagina `/en/jobs` (care e allowed) și a extrage DOM-ul cu job-uri.
 - Paginile individuale de job (`/en/vacancy/...`) sunt și ele disallowed. Noi nu le scraper-uim direct — doar le verificăm accesibilitatea (HEAD request) în E2E tests.
-- Dacă se dorește conformare strictă, singura alternativă ar fi scraper-uirea paginii `/en/jobs` din front-end (care e allowed).
-- Scraperul curent face o singură cerere per pagină (10 job-uri) cu delay de 1s între pagini — comportament rezonabil, nu agresiv.
+- Dacă se dorește conformare strictă, Chromium headless renderizează pagina permisă `/en/jobs` — alternativă complet conformă.
+- Scraperul face o singură cerere Chromium per rulare — comportament rezonabil, nu agresiv.
 
-**Concluzie**: Risc minim. API-ul e public, răspunde fără autentificare, iar scraperul e politicos (rate limiting, User-Agent standard, o singură cerere simultană).
+**Concluzie**: Risc minim. Chromium renderizează o singură pagină permisă de robots.txt, scraperul e politicos (User-Agent identificabil, o singură cerere).

@@ -15,7 +15,7 @@ This repo is the **reference implementation** for all Node.js scrapers in the pe
 
 When making changes to this template:
 - **All company-specific identity lives in `config/company.json`** (CIF, brand, legalName, URLs, API params). Read from `config/company.js` in Node code, or via `jq` in workflows. Never hardcode in source files.
-- **Only the API parsing logic in `index.js`** (`fetchJobsPage`, `parseApiJobs`) is Ciklum-specific. The output shape (`mapToJobModel`, `transformJobsForSOLR`) must stay uniform across derived scrapers.
+- **Only the scraping logic in `index.js`** (`parseApiJobs`) is Ciklum-specific (Chromium rendering). The output shape (`mapToJobModel`, `transformJobsForSOLR`) must stay uniform across derived scrapers.
 - **If you add a new file, update [CONTRIBUTING.md](CONTRIBUTING.md)** — the derivation checklist must stay accurate.
 
 ## Critical Rules
@@ -82,7 +82,7 @@ npm run test:consistency
 
 ### 7. Module Structure
 - `config/company.json` + `config/company.js` — single source of truth for company identity
-- `src/anaf.js` — core ANAF library (imported by company.js); retry logic: 3 retries, 2s exponential backoff
+- `src/anaf.js` — core ANAF library (imported by company.js); tries ANAF once, falls back to cuifirma.ro if it fails
 - `src/markdown-generator.js` — generates `docs/jobs.md` after each scrape; called from index.js
 - `src/job-validator.js` — shared `validateByHead` + `validateByContent` used by both validator CLIs
 - `demoanaf.js` — CLI wrapper around src/anaf.js

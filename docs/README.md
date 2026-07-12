@@ -19,7 +19,7 @@ job_seeker_ro_spider
    - Status: activ/inactiv/radiat
    - Adresa completă din registrul comerțului
 2. **Cross-validează cu Peviitor** — verifică existența companiei în API-ul Peviitor
-3. **Scrape-uiește job-urile** — extrage lista completă de job-uri din API-ul public Ciklum Careers, filtrat pe România
+3. **Scrape-uiește job-urile** — extrage lista completă de job-uri de pe Ciklum Careers prin Chromium headless (rendering SPA), filtrat pe România
 4. **Transformă datele** — normalizează locațiile (doar orașe românești), tag-urile (lowercase), workmode-ul (remote/on-site/hybrid)
 5. **Stochează în SOLR** — upsert în `job` core (job-urile) și `company` core (datele companiei cu adresa completă)
 6. **Generează docs/jobs.md** — fișier markdown cu informații companie + toate job-urile curente, publicat pe [GitHub Pages](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/jobs.md)
@@ -51,7 +51,7 @@ job_seeker_ro_spider
 
 | API | URL | Autentificare |
 |---|---|---|
-| Ciklum Careers | `https://careers.epam.com/api/jobs/v2/search/...` | Public |
+| Ciklum Careers | `https://explore-jobs.ciklum.com/en/sites/ciklum-career/jobs` | Public (Chromium headless) |
 | ANAF (demoanaf) | `https://demoanaf.ro/api/...` | Public |
 | Peviitor | `https://api.peviitor.ro/v1/company/` | Public |
 | SOLR (job core) | `https://solr.peviitor.ro/solr/job` | `SOLR_AUTH` |
@@ -59,11 +59,11 @@ job_seeker_ro_spider
 
 ## Robots.txt
 
-Ciklum Careers [robots.txt](https://careers.epam.com/robots.txt) dezactivează:
+Ciklum Careers [robots.txt](https://explore-jobs.ciklum.com/robots.txt) dezactivează:
 - `/api/*` — API-ul JSON folosit de scraper
 - `/*/vacancy/*` — paginile individuale de job
 
-Scraper-ul folosește API-ul cu rate limiting (1s delay între pagini, 10 job-uri/cerere) și un singur User-Agent identificabil. Paginile individuale de job sunt doar verificate (HEAD request), nu parse-uite.
+Scraper-ul folosește Chromium headless pentru a renderiza pagina SPA și a extrage DOM-ul cu job-uri. Un singur User-Agent identificabil este folosit.
 
 Pentru analiza completă, vezi [ROBOTS.md](../ROBOTS.md).
 

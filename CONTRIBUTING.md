@@ -63,7 +63,7 @@ Failing to update these tests will break CI immediately — the unit test step g
 
 ### 3. Adjust the scraper to the new data source
 
-- Each careers site uses a different API/HTML structure — rewrite `fetchJobsPage()` and `parseApiJobs()` in `index.js` to match the new source
+- Each careers site uses a different API/HTML structure — rewrite the scraping and parsing logic in `index.js` to match the new source
 - Keep the **output shape identical** — `mapToJobModel()` and `transformJobsForSOLR()` should not change, so the SOLR schema stays uniform across the ecosystem
 - Respect the target site's `robots.txt` — update [ROBOTS.md](ROBOTS.md) with the new analysis
 
