@@ -19,8 +19,8 @@ Pentru fiecare workflow din `.github/workflows/`:
 
 | Workflow | Trigger | Ce verifici |
 |----------|---------|-------------|
-| `scrape.yml` | `workflow_dispatch` | Rulează scraperul → jobs in SOLR + docs/jobs.md generat |
-| `test.yml` | `workflow_dispatch` | Toate testele + validare job-uri + company core |
+| `job-seeker-ro-spider.yml` | `workflow_dispatch` | Rulează scraperul → jobs in SOLR |
+| `automation-testing.yml` | `workflow_dispatch` | Toate testele + validare job-uri + company core |
 
 ### Cum verifici:
 
@@ -32,7 +32,7 @@ Pentru fiecare workflow din `.github/workflows/`:
 
 ## 3. Rulează scraperul prin GitHub Actions (ultimul pas)
 
-1. Mergi la **Actions** → **WebScraper Ciklum to Peviitor** (`scrape.yml`)
+1. Mergi la **Actions** → **WebScraper Ciklum to Peviitor** (`job-seeker-ro-spider.yml`)
 2. Apasă **Run workflow** → lasă `main`
 3. Așteaptă să se termine
 4. Verifică în SOLR că job-urile companiei apar:
@@ -40,9 +40,7 @@ Pentru fiecare workflow din `.github/workflows/`:
    # CIF-ul companiei
    curl --user "${SOLR_AUTH}" "https://solr.peviitor.ro/solr/job/select?q=cif:45871772&rows=10"
    ```
-5. Verifică că `docs/jobs.md` a fost generat și este accesibil:
-   - https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/jobs.md
-6. Verifică pe https://peviitor.ro că job-urile sunt vizibile
+5. Verifică pe https://peviitor.ro că job-urile sunt vizibile
 
 ## 4. Final
 

@@ -8,4 +8,4 @@ Scraper automat pentru locurile de muncă CIKLUM ROMANIA SRL (CIF: 45871772) —
 - peviitor-ro
 
 ## Workflow file
-`.github/workflows/scrape.yml`
+`.github/workflows/job-seeker-ro-spider.yml`

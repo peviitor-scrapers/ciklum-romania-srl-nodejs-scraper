@@ -16,8 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auto-heal issue workflow for CI failures
 
 ### Changed
-- `.github/workflows/test.yml` — `ensure-company-core` step now checks for missing fields and always upserts full company doc (was skip-if-exists)
-- `.github/workflows/test.yml` — fixed jq `has()` bug (pass SOLR doc as `--argjson doc`)
+- `.github/workflows/automation-testing.yml` — `ensure-company-core` step now checks for missing fields and always upserts full company doc (was skip-if-exists)
+- `.github/workflows/automation-testing.yml` — fixed jq `has()` bug (pass SOLR doc as `--argjson doc`)
 - Tests: `career` moved to optional field test (was incorrectly required)
 - Tests: relaxed company name assertion to accept `S.R.L.` variants
 - Documentation aligned with EPAM template structure (AGENTS.md, CONTRIBUTING.md, files.md, VERIFY.md, README.md, INSTRUCTIONS.md, CHANGELOG.md)

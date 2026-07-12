@@ -116,10 +116,6 @@ transformJobsForSOLR()
     │
     ▼
 upsertJobs() - SOLR handles duplicate by URL
-    │
-    ▼
-generateJobsMarkdown() → docs/jobs.md
-    └── committed to repo by CI → available on GitHub Pages
 ```
 
 ## File Responsibilities
@@ -127,7 +123,7 @@ generateJobsMarkdown() → docs/jobs.md
 | File | Role |
 |------|------|
 | `company.json` | **ANAF cache (committed)** — survives between CI runs, fallback when ANAF is down |
-| `index.js` | Main entry point - full workflow: validate company → scrape → transform → upsert → generate docs/jobs.md |
+| `index.js` | Main entry point - full workflow: validate company → scrape → transform → upsert |
 | `company.js` | Validates company via ANAF + Peviitor; caches in root `company.json` and `tmp/company.json` |
 | `solr.js` | SOLR operations module - query, delete, upsert jobs + standalone commands |
 | `src/anaf.js` | ANAF API core module - searchCompany(brand) and getCompanyFromANAF(cif) with 3-retry/2s-backoff + cuifirma fallback |

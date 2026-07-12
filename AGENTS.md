@@ -62,7 +62,7 @@ npm run test:consistency
 
 ### 6. Verification
 - După orice modificare, urmează [VERIFY.md](VERIFY.md) pas cu pas
-- Ultimul pas = rulează scraperul prin GitHub Actions, verifică job-urile în SOLR, și verifică că `docs/jobs.md` a fost generat și este accesibil pe GitHub Pages
+- Ultimul pas = rulează scraperul prin GitHub Actions și verifică job-urile în SOLR
 - Toate workflow-urile din `.github/workflows/` trebuie să treacă înainte de merge
 
 ### 7. Module Structure
