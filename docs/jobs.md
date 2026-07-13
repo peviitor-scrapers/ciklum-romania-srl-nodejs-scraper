@@ -10,11 +10,11 @@
 | Location | BD IULIU MANIU, NR.6L, SECTOR 6, BUCUREŞTI |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-07-12 |
+| Last Scraped | 2026-07-13 |
 
 ## Current Job Listings (23)
 
-_Generated: 2026-07-12T08:12:34.129Z_
+_Generated: 2026-07-13T08:58:21.730Z_
 
 ### Senior Full Stack Engineer
 
