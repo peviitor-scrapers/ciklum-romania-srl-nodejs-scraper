@@ -10,25 +10,11 @@
 | Location | BD IULIU MANIU, NR.6L, SECTOR 6, BUCUREŞTI |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-07-16 |
+| Last Scraped | 2026-07-17 |
 
-## Current Job Listings (21)
+## Current Job Listings (19)
 
-_Generated: 2026-07-16T08:03:53.104Z_
-
-### Senior Full Stack Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3746](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3746)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Full Stack Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3747](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3747)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
+_Generated: 2026-07-17T08:00:17.764Z_
 
 ### Senior Java Engineer
 
