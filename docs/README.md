@@ -22,7 +22,7 @@ job_seeker_ro_spider
 3. **Scrape-uiește job-urile** — renderizează cu headless Chromium pagina Ciklum Careers (Oracle HCM SPA, filtrată pe România) și extrage job-urile din DOM-ul renderat
 4. **Transformă datele** — normalizează locațiile (doar orașe românești), tag-urile (lowercase), workmode-ul (remote/on-site/hybrid)
 5. **Stochează în API Peviitor** — upsert/delete prin REST API (job core + company core)
-6. **Generează docs/jobs.md** — fișier markdown cu informații companie + toate job-urile curente, publicat pe [GitHub Pages](https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/jobs.md)
+6. **Generează docs/jobs.md** — fișier markdown cu informații companie + toate job-urile curente, publicat pe [GitHub Pages](https://peviitor-scrapers.github.io/ciklum-romania-srl-nodejs-scraper/jobs.md)
 
 ## Structură proiect
 
