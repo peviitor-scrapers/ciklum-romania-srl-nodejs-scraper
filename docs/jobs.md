@@ -14,7 +14,7 @@
 
 ## Current Job Listings (25)
 
-_Generated: 2026-08-01T08:22:39.160Z_
+_Generated: 2026-08-01T08:31:16.902Z_
 
 ### Senior .NET Engineer
 
