@@ -248,14 +248,14 @@
       <img src="https://peviitor.ro/assets/logo-DV2JQkir.svg" alt="peviitor" class="logo-img">
     </a>
     <h1 data-i18n="pageTitle">Locuri de muncă</h1>
-    <p data-i18n="subtitle">Scraper automat pentru locurile de muncă Ciklum Romania</p>
+    <p data-i18n="subtitle">Scraper automat pentru locurile de muncă Ciklum</p>
 
     <div style="margin: 15px 0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
       <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml" target="_blank">
-        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml/badge.svg" alt="Oportunitati SI Cariere">
+        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/job-seeker-ro-spider.yml/badge.svg" alt="Scraper Status">
       </a>
       <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/automation-testing.yml" target="_blank">
-        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/automation-testing.yml/badge.svg" alt="Automation Tests">
+        <img src="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/actions/workflows/automation-testing.yml/badge.svg" alt="Tests Status">
       </a>
       <a href="https://github.com/sebiboga/ciklum-romania-srl-nodejs-scraper/blob/main/CHANGELOG.md" target="_blank">
         <img src="https://img.shields.io/github/package-json/v/sebiboga/ciklum-romania-srl-nodejs-scraper?label=version&color=blue" alt="Version">
@@ -268,18 +268,6 @@
       </a>
       <a href="https://nodejs.org/" target="_blank">
         <img src="https://img.shields.io/badge/node-24-339933?logo=nodedotjs&logoColor=white" alt="Node.js 24">
-      </a>
-      <a href="https://peviitor.ro" target="_blank">
-        <img src="https://img.shields.io/website?url=https%3A%2F%2Fpeviitor.ro&label=peviitor.ro" alt="peviitor.ro">
-      </a>
-      <a href="https://api.peviitor.ro/" target="_blank">
-        <img src="https://img.shields.io/website?url=https%3A%2F%2Fapi.peviitor.ro%2F&label=api.peviitor.ro" alt="api.peviitor.ro">
-      </a>
-      <a href="https://solr.peviitor.ro/solr/" target="_blank">
-        <img src="https://img.shields.io/website?url=https%3A%2F%2Fsolr.peviitor.ro%2Fsolr%2F&label=solr.peviitor.ro" alt="solr.peviitor.ro">
-      </a>
-      <a href="https://sebiboga.github.io/ciklum-romania-srl-nodejs-scraper/" target="_blank">
-        <img src="https://img.shields.io/github/deployments/sebiboga/ciklum-romania-srl-nodejs-scraper/github-pages?label=GitHub%20Pages" alt="GitHub Pages">
       </a>
       <a href="test-results/" target="_blank">
         <img src="https://img.shields.io/badge/test--results-HTML-9b59b6" alt="Test Results">
@@ -312,11 +300,11 @@
     <div class="card-header" data-i18n="aboutTitle">Despre acest scraper</div>
     <div class="card-body">
       <ul class="features-list" data-i18n="featuresList">
-        <li data-i18n="f1">Extrage job-uri de pe Ciklum Careers prin Chromium headless</li>
-        <li data-i18n="f2">Renderizează pagina SPA și parsează DOM-ul</li>
-        <li data-i18n="f3">Validează compania via ANAF + CUIFirma fallback</li>
+        <li data-i18n="f1">Extrage job-uri de pe Ciklum Careers (Oracle HCM SPA via Chromium)</li>
+        <li data-i18n="f2">Parsează DOM-ul renderat</li>
+        <li data-i18n="f3">Validează compania via ANAF</li>
         <li data-i18n="f4">Verifică și elimină job-uri expirate</li>
-        <li data-i18n="f5">Salvează în SOLR pentru peviitor.ro</li>
+        <li data-i18n="f5">Salvează în API Peviitor pentru peviitor.ro</li>
       </ul>
     </div>
   </div>
@@ -357,8 +345,7 @@
 </div>
 
 <script>
-// Loaded from docs/company.json (regenerated on every scrape)
-let COMPANY = "CIKLUM ROMANIA SRL";
+let COMPANY = "CIKLUM ROMANIA S.R.L.";
 let COMPANY_CIF = "45871772";
 
 async function loadCompanyConfig() {
@@ -366,8 +353,8 @@ async function loadCompanyConfig() {
     const res = await fetch("./company.json", { cache: "no-cache" });
     if (!res.ok) return;
     const cfg = await res.json();
-    if (cfg.legalName) COMPANY = cfg.legalName;
-    if (cfg.cif) COMPANY_CIF = cfg.cif;
+    if (cfg.company) COMPANY = cfg.company;
+    if (cfg.id) COMPANY_CIF = cfg.id;
   } catch (e) {
     console.warn("company.json not available, using fallback constants");
   }
@@ -380,11 +367,11 @@ const i18n = {
     jobsLabel: "Jobs",
     verifiedLabel: "Verified",
     aboutTitle: "About this scraper",
-    f1: "Extracts jobs from Ciklum Careers via Chromium headless",
-    f2: "Renders SPA page and parses the DOM",
-    f3: "Validates company via ANAF + CUIFirma fallback",
+    f1: "Extracts jobs from Ciklum Careers (Oracle HCM SPA via Chromium)",
+    f2: "Parses the rendered DOM",
+    f3: "Validates company via ANAF",
     f4: "Checks and removes expired jobs",
-    f5: "Saves to SOLR for peviitor.ro",
+    f5: "Saves to Peviitor API for peviitor.ro",
     companyTitle: "About the company",
     runBtn: "Run Scraper",
     jobsTitle: "Available jobs",
@@ -395,15 +382,15 @@ const i18n = {
   },
   ro: {
     pageTitle: "Locuri de muncă — peviitor.ro",
-    subtitle: "Scraper automat pentru locurile de muncă Ciklum Romania",
+    subtitle: "Scraper automat pentru locurile de muncă Ciklum",
     jobsLabel: "Locuri de muncă",
     verifiedLabel: "Verificate",
     aboutTitle: "Despre acest scraper",
-    f1: "Extrage locuri de muncă de pe Ciklum Careers prin Chromium headless",
-    f2: "Renderizează pagina SPA și parsează DOM-ul",
-    f3: "Validează compania via ANAF + CUIFirma fallback",
+    f1: "Extrage locuri de muncă de pe Ciklum Careers (Oracle HCM SPA via Chromium)",
+    f2: "Parsează DOM-ul renderat",
+    f3: "Validează compania via ANAF",
     f4: "Verifică și elimină locuri de muncă expirate",
-    f5: "Salvează în SOLR pentru peviitor.ro",
+    f5: "Salvează în API Peviitor pentru peviitor.ro",
     companyTitle: "Despre companie",
     runBtn: "Rulează Scraper",
     jobsTitle: "Locuri de muncă disponibile",

@@ -1,35 +1,31 @@
 /**
- * Ciklum-Specific Job URL Validator (Chromium-based, used by CI)
+ * AXON SOFT-specific Job URL Validator (fast, used by CI)
  *
- * Oracle HCM SPA returns HTTP 200 for ALL pages — even expired ones.
- * The "expired" message is rendered client-side by JavaScript.
- * HEAD requests are useless; we must render with Chromium and check the DOM.
+ * Quick nightly cleanup pass over jobs in the API. Uses HEAD requests only.
+ * Called by .github/workflows/automation-testing.yml on the scheduled run.
+ *
+ * For deep content-aware validation across any CIF, see validate-jobs.js
+ * at the repo root.
  *
  * Flags:
  *   --dry-run    Show invalid jobs but do not delete
- *   --delete     Delete invalid jobs from SOLR after listing
+ *   --delete     Delete invalid jobs after listing
  */
-import companyConfig from "../config/company.js";
-import { querySOLR, deleteJobByUrl } from "../solr.js";
-import { validateByChromium } from "../src/job-validator.js";
+import companyConfig from "../scraper/config/company.js";
+import { querySOLR, deleteJobByUrl } from "../scraper/api.js";
+import { validateByHead } from "../scraper/job-validator.js";
 
-const CIF = companyConfig.cif;
-const COMPANY = companyConfig.legalName;
+const CIF = companyConfig.id;
+const COMPANY = companyConfig.company;
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
   const doDelete = process.argv.includes("--delete");
 
-  if (!process.env.SOLR_AUTH) {
-    console.log("SOLR_AUTH not set — skipping validation");
-    process.exit(0);
-  }
-
-  console.log(`=== Validating ${COMPANY} (CIF: ${CIF}) ===`);
-  console.log(`Method: Chromium headless (SPA-aware)\n`);
+  console.log(`=== Validating ${COMPANY} (CIF: ${CIF}) ===\n`);
 
   const result = await querySOLR(CIF);
-  console.log(`Total jobs in SOLR: ${result.numFound}`);
+  console.log(`Total jobs: ${result.numFound}`);
 
   if (result.numFound === 0) {
     console.log("No jobs to validate.");
@@ -38,9 +34,8 @@ async function main() {
 
   const invalid = [];
   for (const job of result.docs) {
-    const check = await validateByChromium(job.url);
-    const icon = check.status === "active" ? "✅" : check.status === "expired" ? "❌" : "⚠️";
-    console.log(`${icon} [${check.status}] ${job.title}`);
+    const check = await validateByHead(job.url);
+    console.log(`[${check.httpStatus}] ${job.title}`);
     if (check.status !== "active") invalid.push(job);
   }
 
@@ -59,7 +54,6 @@ async function main() {
       await deleteJobByUrl(job.url);
       console.log(`Deleted: ${job.title}`);
     }
-    console.log(`\n✅ Deleted ${invalid.length} expired jobs from SOLR`);
   }
 }
 

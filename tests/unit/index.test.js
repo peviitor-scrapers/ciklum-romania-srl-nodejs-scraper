@@ -1,50 +1,55 @@
 import { jest } from '@jest/globals';
 
-let index;
-
-beforeAll(async () => {
-  index = await import('../../index.js');
-});
-
-const COMPANY_NAME = 'CIKLUM ROMANIA SRL';
-const COMPANY_CIF = '45871772';
-
 describe('index.js Component Tests', () => {
+  let index;
+
+  beforeAll(async () => {
+    index = await import('../../scraper/index.js');
+  });
+
   describe('transformJobsForSOLR', () => {
     it('should filter locations to only Romanian cities', () => {
       const payload = {
-        company: COMPANY_NAME,
         jobs: [
-          { url: 'https://test.com/1', title: 'Job 1', location: ['București'] },
-          { url: 'https://test.com/2', title: 'Job 2', location: ['London'] },
+          { url: 'https://test.com/1', title: 'Job 1', location: ['România'] },
+          { url: 'https://test.com/2', title: 'Job 2', location: ['Cluj-Napoca'] },
+          { url: 'https://test.com/3', title: 'Job 3', location: ['Bulgaria'] },
+          { url: 'https://test.com/4', title: 'Job 4', location: ['Cluj-Napoca'] },
+          { url: 'https://test.com/5', title: 'Job 5', location: [] }
         ]
       };
 
       const result = index.transformJobsForSOLR(payload);
 
-      expect(result.jobs[0].location).toEqual(['București']);
-      expect(result.jobs[1].location).toEqual(['România']);
+      expect(result.jobs[0].location).toEqual(['România']);
+      expect(result.jobs[1].location).toEqual(['Cluj-Napoca']);
+      expect(result.jobs[2].location).toEqual(['România']);
+      expect(result.jobs[3].location).toEqual(['Cluj-Napoca']);
+      expect(result.jobs[4].location).toEqual(['România']);
     });
 
     it('should keep company uppercase', () => {
       const payload = {
-        company: COMPANY_NAME,
+        source: 'ciklum.com',
+        company: 'ciklum romania s.r.l.',
+        cif: '45871772',
         jobs: [
-          { url: 'https://test.com/1', title: 'Job 1', location: ['București'] },
+          { url: 'https://test.com/1', title: 'Job 1', company: 'ciklum romania s.r.l.', cif: '45871772' }
         ]
       };
 
       const result = index.transformJobsForSOLR(payload);
 
-      expect(result.company).toBe('CIKLUM ROMANIA SRL');
+      expect(result.company).toBe('CIKLUM ROMANIA S.R.L.');
     });
 
     it('should normalize workmode values', () => {
       const payload = {
-        company: COMPANY_NAME,
         jobs: [
-          { url: 'https://test.com/1', title: 'Job 1', location: ['București'], workmode: 'Remote' },
-          { url: 'https://test.com/2', title: 'Job 2', location: ['Cluj-Napoca'], workmode: 'Office' },
+          { url: 'https://test.com/1', title: 'Job 1', workmode: 'Remote' },
+          { url: 'https://test.com/2', title: 'Job 2', workmode: 'ON-SITE' },
+          { url: 'https://test.com/3', title: 'Job 3', workmode: 'Hybrid' },
+          { url: 'https://test.com/4', title: 'Job 4', workmode: 'hybrid' }
         ]
       };
 
@@ -52,6 +57,8 @@ describe('index.js Component Tests', () => {
 
       expect(result.jobs[0].workmode).toBe('remote');
       expect(result.jobs[1].workmode).toBe('on-site');
+      expect(result.jobs[2].workmode).toBe('hybrid');
+      expect(result.jobs[3].workmode).toBe('hybrid');
     });
 
     it('should handle empty jobs array', () => {
@@ -63,11 +70,15 @@ describe('index.js Component Tests', () => {
   describe('mapToJobModel', () => {
     it('should map raw job to job model format', () => {
       const rawJob = {
-        url: 'https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/123',
-        title: 'Senior Developer',
+        url: 'https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4172893',
+        title: 'QA Automation Engineer',
         location: ['București'],
-        workmode: 'remote',
+        tags: ['QA', 'Automation'],
+        workmode: 'hybrid'
       };
+
+      const COMPANY_NAME = 'CIKLUM ROMANIA S.R.L.';
+      const COMPANY_CIF = '45871772';
 
       const result = index.mapToJobModel(rawJob, COMPANY_CIF, COMPANY_NAME);
 
@@ -75,20 +86,23 @@ describe('index.js Component Tests', () => {
       expect(result.title).toBe(rawJob.title);
       expect(result.company).toBe(COMPANY_NAME);
       expect(result.cif).toBe(COMPANY_CIF);
-      expect(result.location).toEqual(['București']);
-      expect(result.workmode).toBe('remote');
+      expect(result.location).toEqual(rawJob.location);
+      expect(result.tags).toEqual(rawJob.tags);
+      expect(result.workmode).toBe(rawJob.workmode);
       expect(result.status).toBe('scraped');
+      expect(result.date).toBeDefined();
     });
 
     it('should remove undefined fields', () => {
       const rawJob = {
         url: 'https://test.com/1',
-        title: 'Job 1',
+        title: 'Job 1'
       };
 
       const result = index.mapToJobModel(rawJob, '45871772');
 
       expect(result.location).toBeUndefined();
+      expect(result.tags).toBeUndefined();
       expect(result.workmode).toBeUndefined();
     });
 
@@ -103,48 +117,57 @@ describe('index.js Component Tests', () => {
   });
 
   describe('parseApiJobs', () => {
-    it('should parse Ciklum HTML response format', () => {
-      const html = `
-        <div>
-          <a href="/en/sites/ciklum-career/job/12345">Job Link</a>
-          <div class="job-tile__title">Senior Developer</div>
-          <div class="primaryLocation">București</div>
-          <div class="workplaceTypeName">Workplace (Remote)</div>
-        </div>
-      `;
+    const sampleHtml = `<div class="job-tile">
+      <a class="job-tile__link" href="https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4172893">
+        <span class="job-tile__title">QA Automation Engineer</span>
+      </a>
+      <span class="primaryLocation">București</span>
+      <span class="workplaceTypeName">Full-time (hybrid)</span>
+      <span class="job-list-item__job-info-value">2026-07-15</span>
+    </div>
+    <div class="job-tile">
+      <a class="job-tile__link" href="https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4172894">
+        <span class="job-tile__title">Java Backend Developer &amp; Tester</span>
+      </a>
+      <span class="primaryLocation">Bucharest</span>
+      <span class="workplaceTypeName">Full-time (on-site)</span>
+      <span class="job-list-item__job-info-value">2026-07-14</span>
+    </div>`;
 
-      const result = index.parseApiJobs(html);
+    it('should parse jobs from rendered Oracle HCM HTML', () => {
+      const result = index.parseApiJobs(sampleHtml);
 
-      expect(result.jobs.length).toBe(1);
-      expect(result.jobs[0].title).toBe('Senior Developer');
-      expect(result.jobs[0].url).toBe('https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/12345');
+      expect(result.total).toBe(2);
+      expect(result.jobs[0].title).toBe('QA Automation Engineer');
+      expect(result.jobs[0].url).toBe('https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4172893');
+      expect(result.jobs[1].title).toBe('Java Backend Developer & Tester');
+      expect(result.jobs[1].url).toBe('https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4172894');
+    });
+
+    it('should parse location, workmode and posting date', () => {
+      const result = index.parseApiJobs(sampleHtml);
+
       expect(result.jobs[0].location).toBe('București');
+      expect(result.jobs[0].workmode).toBe('hybrid');
+      expect(result.jobs[0].postingDate).toBe('2026-07-15');
+      expect(result.jobs[1].location).toBe('Bucharest');
+      expect(result.jobs[1].workmode).toBe('on-site');
     });
 
-    it('should handle empty HTML', () => {
-      const result = index.parseApiJobs('<html></html>');
-      expect(result.jobs).toEqual([]);
-    });
-
-    it('should handle multiple jobs', () => {
-      const html = `
-        <div>
-          <a href="/en/sites/ciklum-career/job/111">Link 1</a>
-          <div class="job-tile__title">Developer</div>
-          <div class="primaryLocation">Cluj-Napoca</div>
-          <div class="workplaceTypeName">Workplace (Hybrid)</div>
-          <a href="/en/sites/ciklum-career/job/222">Link 2</a>
-          <div class="job-tile__title">Designer</div>
-          <div class="primaryLocation">Timișoara</div>
-          <div class="workplaceTypeName">Workplace (Office)</div>
-        </div>
-      `;
+    it('should skip jobs without a title', () => {
+      const html = `<div class="job-tile">
+        <a class="job-tile__link" href="https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4172893"></a>
+        <span class="primaryLocation">București</span>
+      </div>`;
 
       const result = index.parseApiJobs(html);
+      expect(result.total).toBe(0);
+    });
 
-      expect(result.jobs.length).toBe(2);
-      expect(result.jobs[0].title).toBe('Developer');
-      expect(result.jobs[1].title).toBe('Designer');
+    it('should handle empty page', () => {
+      const result = index.parseApiJobs('<html></html>');
+      expect(result.total).toBe(0);
+      expect(result.jobs).toEqual([]);
     });
   });
 });

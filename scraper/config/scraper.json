@@ -1,0 +1,8 @@
+{
+  "anofmApiUrl": "https://mediere.anofm.ro/api/entity/vw_public_job_posting",
+  "anofmJobUrlPrefix": "https://mediere.anofm.ro/app/module/mediere/job/",
+  "filterUrl": "https://explore-jobs.ciklum.com/en/sites/ciklum-career/jobs?lastSelectedFacet=LOCATIONS&selectedLocationsFacet=300000000468495",
+  "jobUrlPrefix": "https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/",
+  "timeout": 10000,
+  "chromiumTimeout": 60000
+}

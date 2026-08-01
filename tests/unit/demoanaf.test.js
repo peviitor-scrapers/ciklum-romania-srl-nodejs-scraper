@@ -6,10 +6,6 @@ jest.unstable_mockModule('node-fetch', () => ({
   default: mockFetch
 }));
 
-jest.unstable_mockModule('../../src/cuifirma.js', () => ({
-  getCompanyFromCuifirma: jest.fn()
-}));
-
 function anafSearchResponse(results) {
   return {
     ok: true,
@@ -32,11 +28,18 @@ function errorResponse(status) {
   };
 }
 
+function cuiscanCompanyResponse(data) {
+  return {
+    ok: true,
+    json: async () => data
+  };
+}
+
 const ANAF_RECORD = {
   cui: 45871772,
-  name: 'CIKLUM ROMANIA SRL',
-  address: 'BD IULIU MANIU, NR.6L, SECTOR 6, BUCUREŞTI',
-  caenCode: '6210',
+  name: 'CIKLUM ROMANIA S.R.L.',
+  address: 'IANCU DE HUNEDOARA, 48, Bucureşti Sectorul 1, Bucureşti',
+  caenCode: '6220',
   inactive: false,
   registrationNumber: 'J2014005735405',
   vatRegistered: true,
@@ -44,34 +47,43 @@ const ANAF_RECORD = {
   legalForm: 'SRL'
 };
 
+const CUISCAN_RECORD = {
+  cui: 45871772,
+  denumire: 'CIKLUM ROMANIA S.R.L.',
+  adresa: 'IANCU DE HUNEDOARA, 48, Bucureşti Sectorul 1, Bucureşti',
+  codCaen: '6220',
+  activ: true,
+  nrRegCom: 'J2014005735405',
+  platitorTVA: true,
+  stareInregistrare: 'INREGISTRAT din data 14.05.2014',
+  adresaSediu: { strada: 'Bld. Iancu de Hunedoara', numar: '48', localitate: 'Sector 1 Mun. Bucureşti', judet: 'MUNICIPIUL BUCUREŞTI', codPostal: '11745' }
+};
+
 const CACHED_DATA = {
   cui: 45871772,
-  name: 'CIKLUM ROMANIA SRL',
-  address: 'MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD IULIU MANIU, NR.6L',
+  name: 'CIKLUM ROMANIA S.R.L.',
+  address: 'MUNICIPIUL BUCUREŞTI, SECTOR 1, BLD IANCU DE HUNEDOARA, NR.48, ET.9',
   registrationNumber: 'J2014005735405',
-  caenCode: '6210',
+  caenCode: '6220',
   inactive: false,
   onrcStatusLabel: 'Funcțiune'
 };
 
-describe('src/anaf.js', () => {
+describe('scraper/anaf.js', () => {
   let anaf;
-  let cuifirma;
 
   beforeAll(async () => {
-    anaf = await import('../../src/anaf.js');
-    cuifirma = await import('../../src/cuifirma.js');
+    anaf = await import('../../scraper/anaf.js');
   });
 
   beforeEach(() => {
     mockFetch.mockReset();
-    cuifirma.getCompanyFromCuifirma.mockReset();
   });
 
   describe('searchCompany', () => {
     it('should return array of companies for valid brand', async () => {
       mockFetch.mockResolvedValue(anafSearchResponse([
-        { cui: 45871772, name: 'CIKLUM ROMANIA SRL', statusLabel: 'Funcțiune' }
+        { cui: 45871772, name: 'CIKLUM ROMANIA S.R.L.', statusLabel: 'Funcțiune' }
       ]));
 
       const results = await anaf.searchCompany('Ciklum');
@@ -93,7 +105,7 @@ describe('src/anaf.js', () => {
 
     it('should include statusLabel in results', async () => {
       mockFetch.mockResolvedValue(anafSearchResponse([
-        { cui: 45871772, name: 'CIKLUM ROMANIA SRL', statusLabel: 'Funcțiune' }
+        { cui: 45871772, name: 'CIKLUM ROMANIA S.R.L.', statusLabel: 'Funcțiune' }
       ]));
 
       const results = await anaf.searchCompany('Ciklum');
@@ -101,10 +113,16 @@ describe('src/anaf.js', () => {
       expect(results[0]).toHaveProperty('statusLabel', 'Funcțiune');
     });
 
-    it('should throw on HTTP error', async () => {
-      mockFetch.mockResolvedValue(errorResponse(500));
+    it('should fallback to CUIFirma when ANAF search fails', async () => {
+      mockFetch
+        .mockResolvedValueOnce(errorResponse(500))
+        .mockResolvedValueOnce({ ok: true, json: async () => ({ results: [{ cui: 45871772, name: 'CIKLUM ROMANIA S.R.L.', is_active: true }] }) });
 
-      await expect(anaf.searchCompany('Ciklum')).rejects.toThrow('ANAF search error: 500');
+      const results = await anaf.searchCompany('Ciklum');
+
+      expect(Array.isArray(results)).toBe(true);
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].cui).toBe('45871772');
     });
 
     it('should encode brand name in URL', async () => {
@@ -114,8 +132,8 @@ describe('src/anaf.js', () => {
         return Promise.resolve(anafSearchResponse([]));
       });
 
-      await anaf.searchCompany('Ciklum SRL');
-      expect(capturedUrl).toContain(encodeURIComponent('Ciklum SRL'));
+      await anaf.searchCompany('CIKLUM ROMANIA S.R.L.');
+      expect(capturedUrl).toContain(encodeURIComponent('CIKLUM ROMANIA S.R.L.'));
     });
   });
 
@@ -127,38 +145,38 @@ describe('src/anaf.js', () => {
 
       expect(data).toBeDefined();
       expect(data.cui).toBe(45871772);
-      expect(data.name).toBe('CIKLUM ROMANIA SRL');
+      expect(data.name).toBe('CIKLUM ROMANIA S.R.L.');
       expect(data).toHaveProperty('address');
       expect(data).toHaveProperty('registrationNumber');
     });
 
-    it('should fall back to cuifirma when ANAF fails', async () => {
-      mockFetch.mockResolvedValue(errorResponse(500));
-      cuifirma.getCompanyFromCuifirma.mockResolvedValue({
-        cui: 45871772,
-        name: 'CIKLUM ROMANIA SRL'
-      });
+    it('should fallback to CUIScan when ANAF fails', async () => {
+      mockFetch
+        .mockResolvedValueOnce(errorResponse(500))
+        .mockResolvedValueOnce(cuiscanCompanyResponse(CUISCAN_RECORD));
 
       const data = await anaf.getCompanyFromANAF('45871772');
 
       expect(data).toBeDefined();
-      expect(data.name).toBe('CIKLUM ROMANIA SRL');
-      expect(cuifirma.getCompanyFromCuifirma).toHaveBeenCalledWith('45871772');
+      expect(data.cui).toBe(45871772);
+      expect(data.name).toBe('CIKLUM ROMANIA S.R.L.');
+      expect(mockFetch).toHaveBeenCalledTimes(2);
     });
 
-    it('should throw when both ANAF and cuifirma fail', async () => {
+    it('should throw when both ANAF and CUIScan fail', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
-      cuifirma.getCompanyFromCuifirma.mockRejectedValue(new Error('cuifirma error'));
 
       await expect(anaf.getCompanyFromANAF('45871772')).rejects.toThrow();
+      expect(mockFetch).toHaveBeenCalledTimes(2);
     });
 
     it('should handle API-level error response', async () => {
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({ success: false, error: { message: 'Company not found' } })
-      });
-      cuifirma.getCompanyFromCuifirma.mockResolvedValue(null);
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ success: false, error: { message: 'Company not found' } })
+        })
+        .mockResolvedValueOnce(errorResponse(500));
 
       await expect(anaf.getCompanyFromANAF('00000000')).rejects.toThrow();
     });
@@ -177,12 +195,11 @@ describe('src/anaf.js', () => {
 
       const data = await anaf.getCompanyFromANAFWithFallback('45871772');
 
-      expect(data.name).toBe('CIKLUM ROMANIA SRL');
+      expect(data.name).toBe('CIKLUM ROMANIA S.R.L.');
     });
 
     it('should use cached data when API fails', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
-      cuifirma.getCompanyFromCuifirma.mockRejectedValue(new Error('cuifirma error'));
 
       const data = await anaf.getCompanyFromANAFWithFallback('45871772', CACHED_DATA);
 
@@ -191,7 +208,6 @@ describe('src/anaf.js', () => {
 
     it('should throw when API fails and no cache available', async () => {
       mockFetch.mockResolvedValue(errorResponse(500));
-      cuifirma.getCompanyFromCuifirma.mockRejectedValue(new Error('cuifirma error'));
 
       await expect(anaf.getCompanyFromANAFWithFallback('45871772')).rejects.toThrow();
     });

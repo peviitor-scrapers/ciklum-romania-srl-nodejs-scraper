@@ -42,37 +42,35 @@ function peviitorResponse(companies) {
   };
 }
 
-function solrResponse(numFound, docs) {
+function solrResponse(total, data) {
   return {
     ok: true,
-    json: async () => ({ response: { numFound, docs } })
+    json: async () => ({ total, data })
   };
 }
 
-const Ciklum_ANAF_RECORD = {
+const CIKLUM_ANAF_RECORD = {
   cui: 45871772,
-  name: 'CIKLUM ROMANIA SRL',
-  address: 'BD IULIU MANIU, NR.6L, SECTOR 6, BUCUREŞTI',
-  caenCode: '6210',
+  name: 'CIKLUM ROMANIA S.R.L.',
+  address: 'BLV. UNIRII, 12, Sector 1, Municipiul Bucureşti',
+  caenCode: '5829',
   inactive: false,
   vatRegistered: true,
   eFacturaRegistered: false,
-  headquartersAddress: { locality: 'Sector 6 Mun. Bucureşti' }
+  headquartersAddress: { locality: 'Municipiul Cluj-Napoca' }
 };
 
 describe('company.js', () => {
   let company;
 
   beforeAll(async () => {
-    process.env.SOLR_AUTH = 'test:test';
     fs.mkdirSync("tmp", { recursive: true });
     backupFile(COMPANY_JSON_PATH);
     backupFile(ROOT_COMPANY_JSON_PATH);
-    company = await import('../../company.js');
+    company = await import('../../scraper/company.js');
   });
 
   afterAll(() => {
-    delete process.env.SOLR_AUTH;
     restoreFile(COMPANY_JSON_PATH);
     restoreFile(ROOT_COMPANY_JSON_PATH);
   });
@@ -84,15 +82,15 @@ describe('company.js', () => {
 
   describe('getCompanyData (no cache)', () => {
     it('should fetch Ciklum via direct CIF lookup and return company data', async () => {
-      mockFetch.mockResolvedValueOnce(anafCompanyResponse(Ciklum_ANAF_RECORD));
+      mockFetch.mockResolvedValueOnce(anafCompanyResponse(CIKLUM_ANAF_RECORD));
 
       const result = await company.getCompanyData();
 
-      expect(result).toHaveProperty('company', 'CIKLUM ROMANIA SRL');
+      expect(result).toHaveProperty('company', 'CIKLUM ROMANIA S.R.L.');
       expect(result).toHaveProperty('cif', '45871772');
       expect(result).toHaveProperty('active', true);
       expect(result).toHaveProperty('anafData');
-      expect(result.anafData.name).toBe('CIKLUM ROMANIA SRL');
+      expect(result.anafData.name).toBe('CIKLUM ROMANIA S.R.L.');
     });
 
     it('should throw when ANAF returns no data', async () => {
@@ -111,9 +109,9 @@ describe('company.js', () => {
   describe('getCompanyData (with cache)', () => {
     const cachedData = {
       validatedAt: new Date().toISOString(),
-      anaf: Ciklum_ANAF_RECORD,
+      anaf: CIKLUM_ANAF_RECORD,
       summary: {
-        company: 'CIKLUM ROMANIA SRL',
+        company: 'CIKLUM ROMANIA S.R.L.',
         cif: '45871772',
         active: true
       }
@@ -126,7 +124,7 @@ describe('company.js', () => {
     it('should use cached company data when available', async () => {
       const result = await company.getCompanyData();
 
-      expect(result.company).toBe('CIKLUM ROMANIA SRL');
+      expect(result.company).toBe('CIKLUM ROMANIA S.R.L.');
       expect(result.cif).toBe('45871772');
       expect(result.active).toBe(true);
       expect(mockFetch).not.toHaveBeenCalled();
@@ -140,26 +138,25 @@ describe('company.js', () => {
 
     it('should return company data with status active', async () => {
       mockFetch
-        .mockResolvedValueOnce(anafCompanyResponse(Ciklum_ANAF_RECORD))
+        .mockResolvedValueOnce(anafCompanyResponse(CIKLUM_ANAF_RECORD))
         .mockResolvedValueOnce(solrResponse(5, [
           { url: 'https://test.com/1', title: 'Job 1' },
           { url: 'https://test.com/2', title: 'Job 2' }
         ]))
-        .mockResolvedValueOnce(peviitorResponse([{ company: 'CIKLUM ROMANIA SRL' }]));
+        .mockResolvedValueOnce(peviitorResponse([{ company: 'CIKLUM ROMANIA S.R.L.' }]));
 
       const result = await company.validateAndGetCompany();
 
       expect(result).toHaveProperty('status', 'active');
-      expect(result).toHaveProperty('company', 'CIKLUM ROMANIA SRL');
+      expect(result).toHaveProperty('company', 'CIKLUM ROMANIA S.R.L.');
       expect(result).toHaveProperty('cif', '45871772');
       expect(result).toHaveProperty('existingJobsCount');
       expect(typeof result.existingJobsCount).toBe('number');
     });
 
-    // Epam e activă — testul inactive se rulează doar dacă firma e inactivă
-    if (Ciklum_ANAF_RECORD.inactive) {
+    if (CIKLUM_ANAF_RECORD.inactive) {
       it('should return inactive status when company is inactive', async () => {
-        const inactiveRecord = { ...Ciklum_ANAF_RECORD, inactive: true };
+        const inactiveRecord = { ...CIKLUM_ANAF_RECORD, inactive: true };
 
         mockFetch
           .mockResolvedValueOnce(anafCompanyResponse(inactiveRecord))
