@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-08-04 |
+| Last Scraped | 2026-08-05 |
 
 ## Current Job Listings (25)
 
-_Generated: 2026-08-04T08:27:39.082Z_
+_Generated: 2026-08-05T08:25:59.618Z_
 
 ### Senior .NET Engineer
 
