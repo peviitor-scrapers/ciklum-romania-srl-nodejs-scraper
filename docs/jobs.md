@@ -10,11 +10,25 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-08-05 |
+| Last Scraped | 2026-08-06 |
 
 ## Current Job Listings (25)
 
-_Generated: 2026-08-05T08:25:59.618Z_
+_Generated: 2026-08-06T08:23:40.134Z_
+
+### Python Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3764](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3764)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### Senior Python Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3765](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3765)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Senior .NET Engineer
 
@@ -173,20 +187,6 @@ _Generated: 2026-08-05T08:25:59.618Z_
 ### Senior Artificial Intelligence/Machine Learning Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3648](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3648)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Data Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3561](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3561)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Data Platform Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3409](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3409)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
