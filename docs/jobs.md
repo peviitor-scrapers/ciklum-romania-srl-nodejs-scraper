@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-08-12 |
+| Last Scraped | 2026-08-13 |
 
 ## Current Job Listings (25)
 
-_Generated: 2026-08-12T07:15:51.996Z_
+_Generated: 2026-08-13T07:17:44.078Z_
 
 ### Senior DevOps Engineer
 
@@ -93,13 +93,6 @@ _Generated: 2026-08-12T07:15:51.996Z_
 - **Location:** România
 - **Status:** scraped
 
-### Senior JavaScript Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3957](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3957)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
 ### JavaScript Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3958](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3958)
@@ -149,13 +142,6 @@ _Generated: 2026-08-12T07:15:51.996Z_
 - **Location:** România
 - **Status:** scraped
 
-### Senior AI/MLOps Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/2671](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/2671)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
 ### Senior .NET Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3762](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3762)
@@ -187,6 +173,20 @@ _Generated: 2026-08-12T07:15:51.996Z_
 ### Senior Artificial Intelligence/Machine Learning Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3648](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3648)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### Senior Data Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3561](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3561)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### Expert AI Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3525](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3525)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
