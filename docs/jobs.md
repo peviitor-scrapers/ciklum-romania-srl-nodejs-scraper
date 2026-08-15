@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-08-14 |
+| Last Scraped | 2026-08-15 |
 
-## Current Job Listings (25)
+## Current Job Listings (24)
 
-_Generated: 2026-08-14T07:15:53.122Z_
+_Generated: 2026-08-15T06:26:54.478Z_
 
 ### Senior DevOps Engineer
 
@@ -68,13 +68,6 @@ _Generated: 2026-08-14T07:15:53.122Z_
 ### Senior Business Analyst
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3953](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3953)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### .NET Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3954](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3954)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
