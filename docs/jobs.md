@@ -10,11 +10,25 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-08-18 |
+| Last Scraped | 2026-08-19 |
 
-## Current Job Listings (24)
+## Current Job Listings (25)
 
-_Generated: 2026-08-18T06:32:26.159Z_
+_Generated: 2026-08-19T06:33:56.353Z_
+
+### .NET Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4267](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4267)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### .NET Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4268](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4268)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Senior DevOps Engineer
 
@@ -117,13 +131,6 @@ _Generated: 2026-08-18T06:32:26.159Z_
 ### Senior DevOps Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3963](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3963)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Automation QA Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/250008](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/250008)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
