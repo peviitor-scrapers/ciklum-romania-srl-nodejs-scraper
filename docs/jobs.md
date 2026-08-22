@@ -10,11 +10,18 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-08-21 |
+| Last Scraped | 2026-08-22 |
 
 ## Current Job Listings (25)
 
-_Generated: 2026-08-21T06:35:19.058Z_
+_Generated: 2026-08-22T06:28:36.537Z_
+
+### Senior Manual QA Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4292](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4292)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Senior Automation QA Engineer
 
@@ -180,13 +187,6 @@ _Generated: 2026-08-21T06:35:19.058Z_
 ### Senior Data Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3561](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3561)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Expert AI Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3525](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3525)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
