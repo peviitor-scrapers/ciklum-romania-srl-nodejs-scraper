@@ -10,11 +10,32 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-08-30 |
+| Last Scraped | 2026-08-31 |
 
 ## Current Job Listings (23)
 
-_Generated: 2026-08-30T11:02:15.994Z_
+_Generated: 2026-08-31T12:24:00.133Z_
+
+### Expert Full Stack Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3723](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3723)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### .NET Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3951](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3951)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### Senior Business Analyst
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3953](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3953)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Agentic AI & Automation Consultant
 
@@ -107,20 +128,6 @@ _Generated: 2026-08-30T11:02:15.994Z_
 - **Location:** România
 - **Status:** scraped
 
-### .NET Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3951](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3951)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Business Analyst
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3953](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3953)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
 ### JavaScript Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3958](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3958)
@@ -152,13 +159,6 @@ _Generated: 2026-08-30T11:02:15.994Z_
 ### Senior Back End Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3770](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3770)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Expert Full Stack Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3723](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3723)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
