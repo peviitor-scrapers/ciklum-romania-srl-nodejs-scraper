@@ -7,14 +7,14 @@
 | CIF | 45871772 |
 | Brand | Ciklum |
 | Status | activ |
-| Location | București |
+| Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-02 |
+| Last Scraped | 2026-09-03 |
 
-## Current Job Listings (21)
+## Current Job Listings (18)
 
-_Generated: 2026-09-02T10:22:54.209Z_
+_Generated: 2026-09-03T10:31:49.623Z_
 
 ### Expert Full Stack Engineer
 
@@ -93,30 +93,9 @@ _Generated: 2026-09-02T10:22:54.209Z_
 - **Location:** România
 - **Status:** scraped
 
-### Senior JavaScript Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3991](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3991)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
 ### Expert JavaScript Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Python Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3764](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3764)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Python Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3765](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3765)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
