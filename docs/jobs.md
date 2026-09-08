@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-07 |
+| Last Scraped | 2026-09-08 |
 
 ## Current Job Listings (18)
 
-_Generated: 2026-09-07T11:18:26.327Z_
+_Generated: 2026-09-08T10:25:25.266Z_
 
 ### Expert Full Stack Engineer
 
