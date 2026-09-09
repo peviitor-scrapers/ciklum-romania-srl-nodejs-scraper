@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-08 |
+| Last Scraped | 2026-09-09 |
 
-## Current Job Listings (18)
+## Current Job Listings (16)
 
-_Generated: 2026-09-08T10:25:25.266Z_
+_Generated: 2026-09-09T10:35:18.065Z_
 
 ### Expert Full Stack Engineer
 
@@ -40,13 +40,6 @@ _Generated: 2026-09-08T10:25:25.266Z_
 ### Delivery Manager
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4440](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4440)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Agentic AI & Automation Consultant
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3262](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3262)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
@@ -96,13 +89,6 @@ _Generated: 2026-09-08T10:25:25.266Z_
 ### Expert JavaScript Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior .NET Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4028](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4028)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
