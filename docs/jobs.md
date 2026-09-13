@@ -7,14 +7,14 @@
 | CIF | 45871772 |
 | Brand | Ciklum |
 | Status | activ |
-| Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
+| Location | București |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-12 |
+| Last Scraped | 2026-09-13 |
 
 ## Current Job Listings (12)
 
-_Generated: 2026-09-12T09:55:12.932Z_
+_Generated: 2026-09-13T10:55:39.167Z_
 
 ### Expert Full Stack Engineer
 
