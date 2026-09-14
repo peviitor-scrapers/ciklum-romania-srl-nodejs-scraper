@@ -7,14 +7,14 @@
 | CIF | 45871772 |
 | Brand | Ciklum |
 | Status | activ |
-| Location | București |
+| Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-13 |
+| Last Scraped | 2026-09-14 |
 
-## Current Job Listings (12)
+## Current Job Listings (11)
 
-_Generated: 2026-09-13T10:55:39.167Z_
+_Generated: 2026-09-14T11:28:07.976Z_
 
 ### Expert Full Stack Engineer
 
@@ -40,13 +40,6 @@ _Generated: 2026-09-13T10:55:39.167Z_
 ### Data Engineering Expert
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4386](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4386)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Automation QA Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4286](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4286)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
