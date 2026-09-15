@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-14 |
+| Last Scraped | 2026-09-15 |
 
-## Current Job Listings (11)
+## Current Job Listings (10)
 
-_Generated: 2026-09-14T11:28:07.976Z_
+_Generated: 2026-09-15T10:50:21.654Z_
 
 ### Expert Full Stack Engineer
 
@@ -68,13 +68,6 @@ _Generated: 2026-09-14T11:28:07.976Z_
 ### Expert JavaScript Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Back End Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3770](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3770)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
