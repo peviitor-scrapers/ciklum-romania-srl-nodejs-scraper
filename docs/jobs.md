@@ -10,22 +10,15 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-18 |
+| Last Scraped | 2026-09-19 |
 
-## Current Job Listings (10)
+## Current Job Listings (9)
 
-_Generated: 2026-09-18T10:23:27.507Z_
+_Generated: 2026-09-19T10:07:30.616Z_
 
 ### Expert Full Stack Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3723](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3723)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Delivery Manager
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4440](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4440)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
