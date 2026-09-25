@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-09-24 |
+| Last Scraped | 2026-09-25 |
 
-## Current Job Listings (9)
+## Current Job Listings (8)
 
-_Generated: 2026-09-24T10:55:16.265Z_
+_Generated: 2026-09-25T10:57:26.584Z_
 
 ### Senior Data Scientist
 
@@ -54,13 +54,6 @@ _Generated: 2026-09-24T10:55:16.265Z_
 ### Senior DevOps Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3981](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3981)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Expert JavaScript Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3992)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
