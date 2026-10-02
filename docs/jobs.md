@@ -10,11 +10,18 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-01 |
+| Last Scraped | 2026-10-02 |
 
 ## Current Job Listings (5)
 
-_Generated: 2026-10-01T12:14:08.337Z_
+_Generated: 2026-10-02T11:43:11.957Z_
+
+### Expert Artificial Intelligence/Machine Learning Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4778](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4778)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Senior Data Scientist
 
@@ -26,13 +33,6 @@ _Generated: 2026-10-01T12:14:08.337Z_
 ### Solution Architect
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4698](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4698)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior DevOps Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3981](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3981)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
