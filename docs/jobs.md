@@ -10,22 +10,22 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-07 |
+| Last Scraped | 2026-10-08 |
 
 ## Current Job Listings (8)
 
-_Generated: 2026-10-07T12:28:17.803Z_
+_Generated: 2026-10-08T12:38:11.415Z_
 
-### Enterprise Architect
+### Salesforce Engineer
 
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863)
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4876](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4876)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
 
-### Senior Agentic Consultant
+### Enterprise Architect
 
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4811](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4811)
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
