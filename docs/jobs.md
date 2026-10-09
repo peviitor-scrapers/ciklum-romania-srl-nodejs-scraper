@@ -10,11 +10,18 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, BLD. IULIU MANIU, NR.6L, BULEVARDUL IULIU MANIU, NR. 6L, CLADIREA CAMPUS 6.1, ETAJ 1 SI 2, BL.CL. CAMPUS, SC.6.1, ET.1,2 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-08 |
+| Last Scraped | 2026-10-09 |
 
-## Current Job Listings (8)
+## Current Job Listings (9)
 
-_Generated: 2026-10-08T12:38:11.415Z_
+_Generated: 2026-10-09T12:25:12.703Z_
+
+### Support Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4864](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4864)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Salesforce Engineer
 
