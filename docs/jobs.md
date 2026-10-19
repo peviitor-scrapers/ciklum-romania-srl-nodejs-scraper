@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-18 |
+| Last Scraped | 2026-10-19 |
 
-## Current Job Listings (10)
+## Current Job Listings (9)
 
-_Generated: 2026-10-18T10:12:45.081Z_
+_Generated: 2026-10-19T11:48:49.205Z_
 
 ### Senior Salesforce Engineer
 
@@ -68,13 +68,6 @@ _Generated: 2026-10-18T10:12:45.081Z_
 ### Support Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4813](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4813)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Data Scientist
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4688](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4688)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
