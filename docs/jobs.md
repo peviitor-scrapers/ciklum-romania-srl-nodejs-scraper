@@ -7,14 +7,14 @@
 | CIF | 45871772 |
 | Brand | Ciklum |
 | Status | activ |
-| Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
+| Location | București |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-19 |
+| Last Scraped | 2026-10-20 |
 
 ## Current Job Listings (9)
 
-_Generated: 2026-10-19T11:48:49.205Z_
+_Generated: 2026-10-20T10:47:42.517Z_
 
 ### Senior Salesforce Engineer
 
