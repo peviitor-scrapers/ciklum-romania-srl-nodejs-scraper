@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-22 |
+| Last Scraped | 2026-10-23 |
 
-## Current Job Listings (9)
+## Current Job Listings (8)
 
-_Generated: 2026-10-22T10:58:41.657Z_
+_Generated: 2026-10-23T10:51:25.846Z_
 
 ### Senior Salesforce Engineer
 
@@ -33,13 +33,6 @@ _Generated: 2026-10-22T10:58:41.657Z_
 ### Senior .NET Engineer (MAUI)
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4914](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4914)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### .NET Engineer (MAUI)
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4915](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4915)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
