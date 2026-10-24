@@ -10,11 +10,25 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-23 |
+| Last Scraped | 2026-10-24 |
 
-## Current Job Listings (8)
+## Current Job Listings (9)
 
-_Generated: 2026-10-23T10:51:25.846Z_
+_Generated: 2026-10-24T10:06:21.987Z_
+
+### Senior Logic Design Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5000](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5000)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### Expert Logic Design Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5002](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5002)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Senior Salesforce Engineer
 
@@ -26,13 +40,6 @@ _Generated: 2026-10-23T10:51:25.846Z_
 ### .NET Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4941](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4941)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior .NET Engineer (MAUI)
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4914](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4914)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
