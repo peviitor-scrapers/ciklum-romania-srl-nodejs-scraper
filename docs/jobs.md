@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-24 |
+| Last Scraped | 2026-10-25 |
 
 ## Current Job Listings (9)
 
-_Generated: 2026-10-24T10:06:21.987Z_
+_Generated: 2026-10-25T10:31:26.087Z_
 
 ### Senior Logic Design Engineer
 
