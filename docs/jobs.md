@@ -10,11 +10,18 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-27 |
+| Last Scraped | 2026-10-28 |
 
-## Current Job Listings (9)
+## Current Job Listings (10)
 
-_Generated: 2026-10-27T11:24:17.656Z_
+_Generated: 2026-10-28T11:57:08.460Z_
+
+### Back End JavaScript Developer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5070](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5070)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Senior Logic Design Engineer
 
