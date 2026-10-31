@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-30 |
+| Last Scraped | 2026-10-31 |
 
-## Current Job Listings (10)
+## Current Job Listings (9)
 
-_Generated: 2026-10-30T11:58:13.343Z_
+_Generated: 2026-10-31T11:31:46.623Z_
 
 ### Back End JavaScript Developer
 
@@ -47,13 +47,6 @@ _Generated: 2026-10-30T11:58:13.343Z_
 ### .NET Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4941](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4941)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Support Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4864](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4864)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
