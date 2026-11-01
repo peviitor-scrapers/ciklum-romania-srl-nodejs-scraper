@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-10-31 |
+| Last Scraped | 2026-11-01 |
 
 ## Current Job Listings (9)
 
-_Generated: 2026-10-31T11:31:46.623Z_
+_Generated: 2026-11-01T12:29:56.965Z_
 
 ### Back End JavaScript Developer
 
