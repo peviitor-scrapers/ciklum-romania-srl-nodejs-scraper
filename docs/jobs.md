@@ -10,22 +10,22 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-03 |
+| Last Scraped | 2026-11-04 |
 
 ## Current Job Listings (10)
 
-_Generated: 2026-11-03T13:26:29.239Z_
+_Generated: 2026-11-04T13:37:45.569Z_
+
+### Technical Delivery/Developer Manager
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5116](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5116)
+- **Work Mode:** hybrid
+- **Location:** România
+- **Status:** scraped
 
 ### Technical Solution Architect
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5083](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5083)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Back End JavaScript Developer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5070](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5070)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
