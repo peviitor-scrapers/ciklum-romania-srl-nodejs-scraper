@@ -10,11 +10,25 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-04 |
+| Last Scraped | 2026-11-05 |
 
-## Current Job Listings (10)
+## Current Job Listings (12)
 
-_Generated: 2026-11-04T13:37:45.569Z_
+_Generated: 2026-11-05T13:50:40.599Z_
+
+### Senior DevOps Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5125](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5125)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
+
+### Senior Data Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5095](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5095)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Technical Delivery/Developer Manager
 
