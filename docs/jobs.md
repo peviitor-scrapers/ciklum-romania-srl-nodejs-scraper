@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-05 |
+| Last Scraped | 2026-11-06 |
 
-## Current Job Listings (12)
+## Current Job Listings (11)
 
-_Generated: 2026-11-05T13:50:40.599Z_
+_Generated: 2026-11-06T13:35:41.246Z_
 
 ### Senior DevOps Engineer
 
@@ -65,13 +65,6 @@ _Generated: 2026-11-05T13:50:40.599Z_
 - **Location:** România
 - **Status:** scraped
 
-### .NET Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4941](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4941)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
 ### Salesforce Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4876](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4876)
@@ -79,7 +72,7 @@ _Generated: 2026-11-05T13:50:40.599Z_
 - **Location:** România
 - **Status:** scraped
 
-### Enterprise Architect
+### Solution Architect
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863)
 - **Work Mode:** remote
