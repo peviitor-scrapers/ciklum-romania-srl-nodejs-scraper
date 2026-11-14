@@ -10,11 +10,18 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-13 |
+| Last Scraped | 2026-11-14 |
 
-## Current Job Listings (10)
+## Current Job Listings (11)
 
-_Generated: 2026-11-13T13:45:49.114Z_
+_Generated: 2026-11-14T12:50:36.813Z_
+
+### Senior Agentic Engineer
+
+- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5162](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5162)
+- **Work Mode:** remote
+- **Location:** România
+- **Status:** scraped
 
 ### Senior DevOps Engineer
 
