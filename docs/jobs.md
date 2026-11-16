@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-15 |
+| Last Scraped | 2026-11-16 |
 
-## Current Job Listings (11)
+## Current Job Listings (9)
 
-_Generated: 2026-11-15T13:17:09.143Z_
+_Generated: 2026-11-16T14:30:26.227Z_
 
 ### Senior Agentic Engineer
 
@@ -37,13 +37,6 @@ _Generated: 2026-11-15T13:17:09.143Z_
 - **Location:** România
 - **Status:** scraped
 
-### Technical Solution Architect
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5083](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5083)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
 ### Senior Logic Design Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5000](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5000)
@@ -61,13 +54,6 @@ _Generated: 2026-11-15T13:17:09.143Z_
 ### Senior Salesforce Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4924](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4924)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Salesforce Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4876](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4876)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
