@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-16 |
+| Last Scraped | 2026-11-17 |
 
-## Current Job Listings (9)
+## Current Job Listings (7)
 
-_Generated: 2026-11-16T14:30:26.227Z_
+_Generated: 2026-11-17T15:20:53.531Z_
 
 ### Senior Agentic Engineer
 
@@ -26,13 +26,6 @@ _Generated: 2026-11-16T14:30:26.227Z_
 ### Senior DevOps Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5125](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5125)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Data Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5095](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5095)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
@@ -61,13 +54,6 @@ _Generated: 2026-11-16T14:30:26.227Z_
 ### Solution Architect
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Support Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4813](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4813)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
