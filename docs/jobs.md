@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-18 |
+| Last Scraped | 2026-11-19 |
 
-## Current Job Listings (7)
+## Current Job Listings (6)
 
-_Generated: 2026-11-18T14:56:21.439Z_
+_Generated: 2026-11-19T15:02:15.671Z_
 
 ### Senior Agentic Engineer
 
@@ -54,13 +54,6 @@ _Generated: 2026-11-18T14:56:21.439Z_
 ### Solution Architect
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4863)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Expert AI Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3525](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/3525)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
