@@ -7,14 +7,14 @@
 | CIF | 45871772 |
 | Brand | Ciklum |
 | Status | activ |
-| Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL PLEVNEI, NR.159, CLADIREA A. BIROU 130, ET.1 |
+| Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL. PLEVNEI, NR.159, CLADIREA A, BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-23 |
+| Last Scraped | 2026-11-24 |
 
-## Current Job Listings (6)
+## Current Job Listings (5)
 
-_Generated: 2026-11-23T17:04:10.664Z_
+_Generated: 2026-11-24T16:50:25.501Z_
 
 ### Senior Agentic Engineer
 
@@ -40,13 +40,6 @@ _Generated: 2026-11-23T17:04:10.664Z_
 ### Expert Logic Design Engineer
 
 - **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5002](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/5002)
-- **Work Mode:** remote
-- **Location:** România
-- **Status:** scraped
-
-### Senior Salesforce Engineer
-
-- **URL:** [https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4924](https://explore-jobs.ciklum.com/en/sites/ciklum-career/job/4924)
 - **Work Mode:** remote
 - **Location:** România
 - **Status:** scraped
