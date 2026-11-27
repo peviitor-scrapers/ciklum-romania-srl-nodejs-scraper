@@ -10,11 +10,11 @@
 | Location | MUNICIPIUL BUCUREŞTI, SECTOR 6, CAL. PLEVNEI, NR.159, CLADIREA A, BIROU 130, ET.1 |
 | Website | [https://www.ciklum.com](https://www.ciklum.com) |
 | Careers | [https://explore-jobs.ciklum.com](https://explore-jobs.ciklum.com) |
-| Last Scraped | 2026-11-26 |
+| Last Scraped | 2026-11-27 |
 
 ## Current Job Listings (7)
 
-_Generated: 2026-11-26T16:10:59.136Z_
+_Generated: 2026-11-27T15:57:32.239Z_
 
 ### Senior Full Stack Engineer
 
